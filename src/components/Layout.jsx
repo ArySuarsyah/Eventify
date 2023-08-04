@@ -62,7 +62,7 @@ const navigationView = () => (
         <Text style={globalStyle.drawerNavPoint}>My Wishlist</Text>
       </View>
       <View style={globalStyle.drawerNavList}>
-        <Ionicons name="ios-settings-sharp" color="#c0bfbc" size={30} />
+        <Ionicons name="cog" color="#c0bfbc" size={30} />
         <Text style={globalStyle.drawerNavPoint}>Settings</Text>
       </View>
       <TouchableOpacity onPress={logout}>
