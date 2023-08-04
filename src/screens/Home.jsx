@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -8,7 +9,7 @@ import {
   SafeAreaView,
   DrawerLayoutAndroid,
 } from 'react-native';
-import {Searchbar} from 'react-native-paper';
+import {Searchbar, TouchableRipple} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -37,7 +38,6 @@ export default function Home() {
   const drawer = React.useRef(null);
   const {id} = jwt_decode(token);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
-  const eventImg = Image.resolveAssetSource(ImageEvent).uri;
   const navigation = useNavigation();
   const deviceToken = useSelector(state => state.deviceToken.deviceToken);
   const logout = async () => {
@@ -137,7 +137,7 @@ export default function Home() {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
           <View style={globalStyle.drawerNavList}>
-            <Ionicons name="ios-settings-sharp" color="#c0bfbc" size={30} />
+            <Ionicons name="cog" color="#c0bfbc" size={30} />
             <Text style={globalStyle.drawerNavPoint}>Settings</Text>
           </View>
         </TouchableOpacity>
@@ -215,7 +215,7 @@ export default function Home() {
                           title={event?.title}
                           date={event?.createdAt}
                           id={event?.id}
-                          image={eventImg}
+                          image={`https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`}
                           event={event}
                           styles={styles}
                         />
@@ -224,16 +224,75 @@ export default function Home() {
                   </ScrollView>
                 </View>
                 <View>
-                  <Text>Discover</Text>
+                  <Text style={{fontSize: 20}}>Discover</Text>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <View>
-                      <MaterialCommunityIcons
-                        name="map-marker-outline"
-                        size={20}
-                        color="#02A8A8"
-                      />
+                    <View style={{flexDirection: 'row', gap: 50, padding: 10}}>
+                      <TouchableRipple>
+                        <View style={[styles.listNavEvent, styles.shadowProp]}>
+                          <View
+                            style={{
+                              padding: 7,
+                              backgroundColor: '#dedede',
+                              borderRadius: 50,
+                              width: 40,
+                              height: 40,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <MaterialCommunityIcons
+                              name="map-marker-outline"
+                              size={20}
+                              color="#02A8A8"
+                            />
+                          </View>
+                          <Text style={{fontSize: 12}}>YOUR AREA</Text>
+                        </View>
+                      </TouchableRipple>
+                      <View style={[styles.listNavEvent, styles.shadowProp]}>
+                        <View
+                          style={{
+                            padding: 7,
+                            backgroundColor: '#dedede',
+                            borderRadius: 50,
+                            width: 40,
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <FontAwesome name="music" size={20} color="#02A8A8" />
+                        </View>
+                        <Text style={{fontSize: 12}}>MUSIC</Text>
+                      </View>
+                      <View style={[styles.listNavEvent, styles.shadowProp]}>
+                        <View
+                          style={{
+                            padding: 7,
+                            backgroundColor: '#dedede',
+                            borderRadius: 50,
+                            width: 40,
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <FontAwesome name="music" size={20} color="#02A8A8" />
+                        </View>
+                        <Text style={{fontSize: 12}}>MUSIC</Text>
+                      </View>
                     </View>
                   </ScrollView>
+                </View>
+                <View>
+                  {eventList.map(event => (
+                    <EventList
+                      key={`event-${event.id}`}
+                      title={event?.title}
+                      date={event?.createdAt}
+                      id={event?.id}
+                      image={`https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`}
+                      event={event}
+                      styles={styles}
+                    />
+                  ))}
                 </View>
               </View>
             </View>
@@ -328,5 +387,22 @@ const styles = StyleSheet.create({
   },
   bgColor: {
     backgroundColor: '#393646',
+  },
+  listNavEvent: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    gap: 10,
+    padding: 10,
+    borderRadius: 30,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: 150,
+  },
+  shadowProp: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.5,
+    shadowRadius: 22,
+    elevation: 5,
   },
 });
