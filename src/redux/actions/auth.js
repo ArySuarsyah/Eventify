@@ -11,6 +11,7 @@ export const asyncLogin = createAsyncThunk(
       form.append('confirmPassword', payload.confirmPassword);
 
       const {data} = await http().post('/auth/login', form.toString());
+      console.log(form);
       return data.results.token;
     } catch (error) {
       const message = error?.response?.message;
@@ -27,13 +28,15 @@ export const asyncRegister = createAsyncThunk(
   'asyncRegister',
   async (payload, {rejectWithValue}) => {
     try {
-      const form = new URLSearchParams();
-      form.append('fullName', payload.fullName);
-      form.append('email', payload.email);
-      form.append('password', payload.password);
-      form.append('confirmPassword', payload.confirmPassword);
+      const form = new URLSearchParams({
+        fullName: payload.fullName,
+        email: payload.email,
+        password: payload.password,
+        confirmPassword: payload.confirmPassword,
+      }).toString();
 
-      const {data} = await http().post('/auth/register', form.toString());
+      const {data} = await http().post('/auth/register', form);
+
       return data.results.token;
     } catch (error) {
       const message = error?.response?.message;
