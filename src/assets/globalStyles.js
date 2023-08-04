@@ -136,7 +136,7 @@ const globalStyle = StyleSheet.create({
   },
   redColor: {color: '#f03e3e'},
   bgGradient: {
-    backgroundColor: 'rgba(0, 0, 0, 0.33)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -145,8 +145,8 @@ const globalStyle = StyleSheet.create({
   imgEvent: {
     borderWidth: 1,
     borderColor: '#000000',
-    width: 200,
-    height: 300,
+    width: '100%',
+    height: '100%',
   },
   userImage: {
     borderRadius: 100,
@@ -165,6 +165,7 @@ const globalStyle = StyleSheet.create({
   bookingFooter: {
     flexDirection: 'row',
     padding: 20,
+    marginTop: 15,
     gap: 10,
   },
   textHeader: {
