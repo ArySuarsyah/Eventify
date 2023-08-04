@@ -8,7 +8,6 @@ import globalStyle from '../../assets/globalStyles';
 import React from 'react';
 import card from '../../assets/Image/card.png';
 import {useSelector} from 'react-redux';
-import jwtDecode from 'jwt-decode';
 import http from '../../helper/http';
 import {TouchableRipple} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
@@ -18,12 +17,12 @@ const Profile = () => {
   const navigation = useNavigation();
   const [user, setUser] = React.useState([]);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
-  const {id} = jwtDecode(token);
+
 
   const getUser = React.useCallback(async () => {
-    const {data} = await http(token).get(`/updateProfile/${id}`);
+    const {data} = await http(token).get(`/profile`);
     setUser(data.results);
-  }, [token, id]);
+  }, [token]);
 
   React.useEffect(() => {
     getUser();
