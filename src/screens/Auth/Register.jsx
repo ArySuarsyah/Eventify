@@ -5,7 +5,6 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Pressable,
 } from 'react-native';
 import styles from '../../assets/globalStyles';
 import {Link} from '@react-navigation/native';
@@ -18,7 +17,8 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {asyncRegister as registerAction} from '../../redux/actions/auth';
-import {login} from '../../redux/reducers/authReducers';
+// import { login } from '../../redux/reducers/authReducers';
+import {useNavigation} from '@react-navigation/native';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -28,6 +28,7 @@ const validationSchema = Yup.object({
 
 export default function Register() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowCoonfirmPassword] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -44,7 +45,6 @@ export default function Register() {
 
   const doRegister = values => {
     dispatch(registerAction(values));
-    console.log(values);
   };
 
   return (
