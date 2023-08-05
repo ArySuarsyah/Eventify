@@ -149,12 +149,15 @@ const globalStyle = StyleSheet.create({
     height: '100%',
   },
   userImage: {
+    padding: 5,
     borderRadius: 100,
     overflow: 'hidden',
     width: 100,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#42E6A4',
     height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bookingHeader: {
     flexDirection: 'row',
@@ -212,6 +215,8 @@ const globalStyle = StyleSheet.create({
     width: '50%',
     height: '35%',
     justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
   },
   result: {
     width: '50%',
