@@ -12,7 +12,6 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import globalStyle from '../../assets/globalStyles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import {TouchableRipple, Checkbox} from 'react-native-paper';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 const validationSchema = Yup.object({
