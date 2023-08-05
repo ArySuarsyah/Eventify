@@ -1,16 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
-import moment from 'moment';
 import NoTicket from '../../components/NoTicket';
 import {TouchableRipple} from 'react-native-paper';
 
