@@ -70,27 +70,14 @@ export default function EditProfile() {
 
   return (
     <ScrollView>
-      <View
-        style={{
-          backgroundColor: 'white',
-          paddingHorizontal: 10,
-        }}>
+      <View style={styles.container}>
         <View style={globalStyle.bookingHeader}>
           <AntDesign name="arrowleft" size={30} color="#02A8A8" />
           <Text style={globalStyle.textHeader}>Edit Profile</Text>
         </View>
-        <View style={{alignItems: 'center', padding: 10}}>
+        <View style={styles.main}>
           <View style={globalStyle.userImage}>
-            <View
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 100,
-
-                overflow: 'hidden',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.ImageParent}>
               <LinearGradient
                 colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.55)']}
                 style={globalStyle.bgGradient}
@@ -104,7 +91,7 @@ export default function EditProfile() {
               />
             </View>
           </View>
-          <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={styles.profileDataContainer}>
             <View style={styles.profileData}>
               {editFullname && (
                 <TextInput
@@ -175,7 +162,7 @@ export default function EditProfile() {
                     radioButtons={radioButtons}
                     onPress={setSelectedId}
                     selectedId={selectedId}
-                    containerStyle={{flexDirection: 'row'}}
+                    containerStyle={styles.radioDirection}
                   />
                 )}
                 {!editGender && <Text style={styles.profileValue}>Gender</Text>}
@@ -188,7 +175,7 @@ export default function EditProfile() {
               <List.Section
                 title="Profession"
                 titleStyle={styles.titleStyle}
-                style={{width: '100%', backgroundColor: 'white'}}>
+                style={styles.listAccordionStyle}>
                 <List.Accordion
                   title="Select Profession"
                   style={styles.accordionBg}>
@@ -200,7 +187,7 @@ export default function EditProfile() {
             <View style={styles.accordion}>
               <List.Section
                 title="Nationality"
-                style={{width: '100%'}}
+                style={styles.listAccordionStyle}
                 titleStyle={styles.titleStyle}>
                 <List.Accordion
                   title="Select Nationality"
@@ -218,6 +205,11 @@ export default function EditProfile() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+  },
+  main: {alignItems: 'center', padding: 10},
   input: {
     color: 'black',
     padding: 10,
@@ -253,4 +245,15 @@ const styles = StyleSheet.create({
   profileValue: {
     fontSize: 20,
   },
+  ImageParent: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 100,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileDataContainer: {width: '100%', alignItems: 'center'},
+  radioDirection: {flexDirection: 'row'},
+  listAccordionStyle: {width: '100%', backgroundColor: 'white'},
 });
