@@ -12,9 +12,11 @@ import Wishlist from './Wishlist/Index';
 import Settings from './Settings/Index';
 import EditProfile from './Profile/EditProfile';
 import Payment from './Payment/Index';
+import MyBooking from './MyBooking/index';
+import ChangePassword from './Auth/ChangePassword';
+import ManageEvent from './Manage/Index';
 
 import {useSelector} from 'react-redux';
-
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
@@ -38,9 +40,12 @@ export default function Main() {
           <Stack.Screen name="Booking" component={Booking} />
           <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="Wishlist" component={Wishlist} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="Wishlist" component={Wishlist} />
+          <Stack.Screen name="MyBooking" component={MyBooking} />
+          <Stack.Screen name="ManageEvent" component={ManageEvent} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
