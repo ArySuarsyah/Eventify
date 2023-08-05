@@ -1,5 +1,5 @@
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {Button, TouchableRipple} from 'react-native-paper';
+import {TouchableRipple} from 'react-native-paper';
 import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
@@ -245,7 +245,7 @@ export default function Booking() {
         </View>
         <TouchableRipple
           style={globalStyle.bookingButton}
-          onPress={() => console.log('ok')}>
+          onPress={() => console.log('oky')}>
           <Text style={styles.colorWhite}>Checkout</Text>
         </TouchableRipple>
       </View>
