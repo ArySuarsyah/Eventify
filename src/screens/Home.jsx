@@ -20,7 +20,6 @@ import Octicons from 'react-native-vector-icons/dist/Octicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../assets/globalStyles';
-import ImageEvent from '../assets/Image/advanture.jpg';
 import userImage from '../assets/Image/userDefault.png';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
