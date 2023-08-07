@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, Image, ScrollView} from 'react-native';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
@@ -18,9 +17,8 @@ const Profile = () => {
   const [user, setUser] = React.useState([]);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
 
-
   const getUser = React.useCallback(async () => {
-    const {data} = await http(token).get(`/profile`);
+    const {data} = await http(token).get('/profile');
     setUser(data.results);
   }, [token]);
 
@@ -39,13 +37,24 @@ const Profile = () => {
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', gap: 20}}>
           <View style={globalStyle.userImage}>
-            <Image
-              source={{
-                uri: USER_DEFAULT_IMAGE,
-              }}
-              width={100}
-              height={100}
-            />
+            {user?.pictuer && (
+              <Image
+                source={{
+                  uri: `http://localhost:8888/uploads/${user.picture}`,
+                }}
+                width={100}
+                height={100}
+              />
+            )}
+            {!user?.picture && (
+              <Image
+                source={{
+                  uri: USER_DEFAULT_IMAGE,
+                }}
+                width={100}
+                height={100}
+              />
+            )}
           </View>
           <Text style={{fontSize: 18}}>{user.fullName}</Text>
           <Text>{user.email}</Text>
