@@ -15,29 +15,49 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/dist/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import Foundation from 'react-native-vector-icons/dist/Foundation';
+import {List} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import {selectPayment} from '../../redux/reducers/paymentReducers';
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import retail from '../../assets/Image/market.png';
 import card from '../../assets/Image/card.png';
 import bri from '../../assets/Image/bri.png';
 import bni from '../../assets/Image/bni.png';
-import Foundation from 'react-native-vector-icons/dist/Foundation';
-import {List} from 'react-native-paper';
 
 export default function Payment() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const paymentData = useSelector(state => state.payment.dataPayment);
   const [expandedCard, setExpandedCard] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [expandedEmoney, setExpandedEmoney] = React.useState(false);
-  const [selectedId, setSelectedId] = React.useState();
+  const [selectedCard, setSelectedCard] = React.useState('card1');
+  const [paymentMethod, setPaymentMethod] = React.useState('');
 
   const handlePress = () => setExpanded(!expanded);
-  const handlePressRetail = () => setOpen(!open);
-  const handlePressEmoney = () => setExpandedEmoney(!expandedEmoney);
+  const handlePressRetail = () => {
+    setPaymentMethod('Retail');
+    setOpen(!open);
+  };
+  const handlePressEmoney = () => {
+    setPaymentMethod('E-Money');
+    setExpandedEmoney(!expandedEmoney);
+  };
   const handlePressOnCard = () => setExpandedCard(!expandedCard);
 
   const market = Image.resolveAssetSource(retail).uri;
   const briLogo = Image.resolveAssetSource(bri).uri;
   const bniLogo = Image.resolveAssetSource(bni).uri;
 
+  const cardData = ['card', 'card', 'card'];
+
+  const handleCard = item => {
+    setSelectedCard(item);
+    setPaymentMethod(item);
+  };
   // const radioButtons = React.useMemo(
   //   () => [
   //     {
@@ -47,7 +67,10 @@ export default function Payment() {
   //   ],
   //   [],
   // );
-
+  const checkoutPayment = () => {
+    dispatch(selectPayment(paymentMethod));
+    navigation.navigate('ConfirmPayment');
+  };
   return (
     <>
       <ScrollView>
@@ -68,7 +91,9 @@ export default function Payment() {
                     <View style={styles.radioButtons}>
                       <View
                         style={
-                          expandedCard ? styles.selectedRadio : styles.hidden
+                          paymentMethod === selectedCard
+                            ? styles.selectedRadio
+                            : styles.hidden
                         }
                       />
                     </View>
@@ -79,26 +104,49 @@ export default function Payment() {
                 expanded={expandedCard}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <View style={styles.cardParent}>
-                    <Image source={card} width={200} height={100} />
-                    <Image source={card} width={200} height={100} />
+                    {cardData.map((item, index) => {
+                      return (
+                        <TouchableRipple
+                          key={index}
+                          onPress={() => handleCard(item)}>
+                          <View value={item} style={styles.radioCard}>
+                            <View style={styles.selectValue}>
+                              <View
+                                style={
+                                  paymentMethod === item
+                                    ? styles.circleRadio
+                                    : ''
+                                }>
+                                <Text> </Text>
+                              </View>
+                            </View>
+                            <Image source={card} width={200} height={100} />
+                          </View>
+                        </TouchableRipple>
+                      );
+                    })}
                   </View>
                 </ScrollView>
               </List.Accordion>
               <List.Accordion
                 style={styles.accordionStyle}
                 title="Bank Transfer"
+                onPress={() => setPaymentMethod('Bank Transfer')}
                 left={props => (
                   <View style={styles.iconTitleAccordion}>
                     <View style={styles.radioButtons}>
                       <View
-                        style={expanded ? styles.selectedRadio : styles.hidden}
+                        style={
+                          paymentMethod !== 'Bank Transfer'
+                            ? styles.hidden
+                            : styles.selectedRadio
+                        }
                       />
                     </View>
                     <FontAwesome name="bank" size={30} color="#FC1055" />
                   </View>
                 )}
-                expanded={expanded}
-                onPress={handlePress}>
+                expanded={expanded}>
                 <View style={styles.gapBankOption}>
                   <View style={styles.bankValue}>
                     <Image source={{uri: briLogo}} width={20} height={20} />
@@ -117,7 +165,11 @@ export default function Payment() {
                   <View style={styles.iconTitleAccordion}>
                     <View style={styles.radioButtons}>
                       <View
-                        style={open ? styles.selectedRadio : styles.hidden}
+                        style={
+                          paymentMethod !== 'Retail'
+                            ? styles.hidden
+                            : styles.selectedRadio
+                        }
                       />
                     </View>
                     <FontAwesome6 name="shop" size={30} color="#FF8900" />
@@ -136,7 +188,9 @@ export default function Payment() {
                     <View style={styles.radioButtons}>
                       <View
                         style={
-                          expandedEmoney ? styles.selectedRadio : styles.hidden
+                          paymentMethod !== 'E-Money'
+                            ? styles.hidden
+                            : styles.selectedRadio
                         }
                       />
                     </View>
@@ -161,13 +215,11 @@ export default function Payment() {
           <Text style={styles.fontSizeCard}>Total Payment</Text>
           <View style={styles.totalPayment}>
             <Foundation name="dollar" size={30} color="#3366FF" />
-            <Text style={styles.fontSizeCard}>70</Text>
+            <Text style={styles.fontSizeCard}>{paymentData.price}</Text>
           </View>
         </View>
-        <TouchableRipple
-          style={styles.paymentButton}
-          onPress={() => console.log('oky')}>
-          <Text style={styles.colorWhite}>Checkout</Text>
+        <TouchableRipple style={styles.paymentButton} onPress={checkoutPayment}>
+          <Text style={styles.colorWhite}>Payment</Text>
         </TouchableRipple>
       </View>
     </>
@@ -224,10 +276,11 @@ const styles = StyleSheet.create({
   },
   cardParent: {
     flexDirection: 'row',
-    gap: 10,
-    paddingVertical: 10,
-    borderWidth: 1,
+    gap: 20,
+    paddingRight: 50,
     width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   bankValue: {
     flexDirection: 'row',
@@ -249,4 +302,27 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   totalPayment: {flexDirection: 'row', alignItems: 'center', gap: 10},
+  radioCard: {
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  selectValue: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 5,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circleRadio: {
+    backgroundColor: 'black',
+    width: 15,
+    height: 15,
+    borderRadius: 15,
+  },
 });
