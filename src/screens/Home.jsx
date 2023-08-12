@@ -54,7 +54,6 @@ export default function Home() {
 
   const getUser = React.useCallback(async () => {
     const {data} = await http(token).get('/profile');
-    console.log(data.results);
     setUser(data.results);
   }, [token]);
 
