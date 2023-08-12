@@ -43,7 +43,7 @@ export default function MyBooking() {
         </View>
         {dataHistory.map(history => {
           return (
-            <View style={globalStyle.myBokingContaner}>
+            <View key={history.id} style={globalStyle.myBokingContaner}>
               <View style={globalStyle.dateStyle}>
                 <Text style={globalStyle.date}>15</Text>
                 <Text>Wed</Text>
