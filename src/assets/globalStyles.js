@@ -272,7 +272,7 @@ const globalStyle = StyleSheet.create({
     elevation: 1,
   },
   date: {fontSize: 14, color: '#F5DEA3'},
-  fontData: {fontSize: 24},
+  fontData: {fontSize: 18},
 });
 
 export default globalStyle;
