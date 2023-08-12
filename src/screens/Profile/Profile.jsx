@@ -102,7 +102,7 @@ const Profile = () => {
             <AntDesign name="right" size={30} color="#02A8A8" />
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => navigation.navigate('ChangeProfile')}>
+        <TouchableRipple onPress={() => navigation.navigate('ChangePassword')}>
           <View
             style={{
               flexDirection: 'row',
@@ -112,7 +112,7 @@ const Profile = () => {
               height: 50,
             }}>
             <AntDesign name="lock" size={30} color="#02A8A8" />
-            <Text style={{flex: 1, fontSize: 18}}>Change Profile</Text>
+            <Text style={{flex: 1, fontSize: 18}}>Change Password</Text>
             <AntDesign name="right" size={30} color="#02A8A8" />
           </View>
         </TouchableRipple>
