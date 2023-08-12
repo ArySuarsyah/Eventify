@@ -32,7 +32,7 @@ export default function Index() {
   const handleReadmore = () => {
     setReadMore(!readMore);
   };
-  console.log(eventId);
+
 
   return (
     <SafeAreaView>
