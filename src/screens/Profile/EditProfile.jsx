@@ -202,26 +202,17 @@ export default function EditProfile() {
 
   const handleButtonSave = async () => {
     try {
-      const form = new URLSearchParams({
-        fullName: fullName,
-        userName: username,
-        email: emailUser,
-        phoneNumber: userPhone,
-        gender: selectedId,
-        profession: professionId,
-        nationality: selectCountries,
-        birthdate: dataDate,
-      }).toString();
+      const form = new FormData();
       // form.append('picture', picture);
-      // form.append('fullName', fullName);
-      // form.append('userName', username);
-      // form.append('email', emailUser);
-      // form.append('phoneNumber', userPhone);
-      // form.append('gender', selectedId);
-      // form.append('profession', professionId);
-      // form.append('nationality', selectCountries);
-      // form.append('birthdate', dataDate);
-      console.log(form);
+      form.append('fullName', fullName);
+      form.append('userName', username);
+      form.append('email', emailUser);
+      form.append('phoneNumber', userPhone);
+      form.append('gender', selectedId);
+      form.append('profession', professionId);
+      form.append('nationality', selectCountries);
+      form.append('birthdate', dataDate);
+      // console.log(form);
       const {data} = await http(token).post('/profile', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -235,11 +226,11 @@ export default function EditProfile() {
     } catch (error) {
       setSuccess(true);
       setMessage(error.message);
+      console.log(error);
     }
   };
 
   const handleConfirm = () => {
-    console.log('ok');
     setRefreshing(true);
     setSuccess(false);
     if (user) {
@@ -259,7 +250,7 @@ export default function EditProfile() {
   //   }, 2000);
   // }, []);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} />}>
