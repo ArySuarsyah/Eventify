@@ -11,8 +11,16 @@ import imageSecTwo from '../../assets/Image/icon-tickets2.png';
 import imageSecThree from '../../assets/Image/icon-tickets3.png';
 import sectionBlack from '../../assets/Image/Black.png';
 import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {getData} from '../../redux/reducers/paymentReducers';
 
 export default function Booking() {
+  const eventId = useSelector(state => state.event.data);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const stadium = Image.resolveAssetSource(stadiumImg).uri;
   const secOne = Image.resolveAssetSource(imageSecOne).uri;
   const secTwo = Image.resolveAssetSource(imageSecTwo).uri;
@@ -23,6 +31,8 @@ export default function Booking() {
   const [countVip, setCountVip] = useState(0);
   const [countVvip, setCountVvip] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [section, setSection] = useState('Reg');
+  const [quantity, setQuantity] = useState(0);
 
   const countRegMinus = () => {
     if (countReg > 0) {
@@ -70,8 +80,27 @@ export default function Booking() {
 
   useEffect(() => {
     const price = countReg * 15 + countVip * 35 + countVvip * 50;
+    setQuantity(countReg + countVip + countVvip);
+
+    countReg && setSection('4');
+    countVip && setSection('5');
+    countVvip && setSection('6');
     setTotalPrice(price);
   }, [countReg, countVip, countVvip]);
+
+  const handleBuy = () => {
+    const form = {
+      section: section,
+      quantity: quantity,
+      price: totalPrice,
+    };
+    // form.append('section', section);
+    // form.append('quantity', quantity);
+    // form.append('price', totalPrice);
+
+    dispatch(getData(form));
+    navigation.navigate('Payment');
+  };
 
   return (
     <View>
@@ -243,9 +272,7 @@ export default function Booking() {
           </View>
           <Text style={styles.textAvaible}>Get now on Urticket</Text>
         </View>
-        <TouchableRipple
-          style={globalStyle.bookingButton}
-          onPress={() => console.log('oky')}>
+        <TouchableRipple style={globalStyle.bookingButton} onPress={handleBuy}>
           <Text style={styles.colorWhite}>Checkout</Text>
         </TouchableRipple>
       </View>
