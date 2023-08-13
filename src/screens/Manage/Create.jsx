@@ -1,8 +1,10 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import {TextInput, List, TouchableRipple} from 'react-native-paper';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import globalStyle from '../../assets/globalStyles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+// import ImagePicker from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -22,6 +24,64 @@ export default function Create() {
   const [selectedLocation, setSelectedLocation] = React.useState('');
   const [category, setCategory] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState('');
+  const [imagePick, setImagePick] = React.useState('');
+
+  const openGalerry = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        const randomFileName =
+          generateRandomFileName() + getFileExtension(imageUri);
+        setImagePick(randomFileName);
+      }
+    });
+  };
+
+  const openCamera = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchCamera(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        const randomFileName =
+          generateRandomFileName() + getFileExtension(imageUri);
+        setImagePick(randomFileName);
+      }
+    });
+  };
+
+  const generateRandomFileName = () => {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    return `${timestamp}_${randomNum}`;
+  };
+
+  const getFileExtension = uri => {
+    const filenameParts = uri.split('.');
+    return `.${filenameParts[filenameParts.length - 1]}`;
+  };
+
+  console.log(imagePick);
 
   const cities = [
     'Jakarta',
@@ -55,7 +115,7 @@ export default function Create() {
   const chooseFhoto = ['Open Galeri', 'Open Camera'];
   const doCreate = values => {
     const form = new FormData();
-    // form.append('picture', pictureData)
+    form.append('picture', imagePick);
     form.append('title', values.name);
     form.append('price', values.price);
     form.append('date', dataDate);
@@ -68,7 +128,7 @@ export default function Create() {
 
   return (
     <ScrollView>
-      <View>
+      <View style={styles.container}>
         <View style={globalStyle.bookingHeader}>
           <AntDesign name="arrowleft" size={30} color="#02A8A8" />
           <Text style={globalStyle.textHeader}>Create</Text>
@@ -167,13 +227,12 @@ export default function Create() {
                 </TouchableRipple>
                 <List.Section style={styles.containerAccordion}>
                   <List.Accordion title="Choose Fhoto" style={styles.accordion}>
-                    {chooseFhoto.map((item, index) => (
-                      <TouchableRipple
-                        key={index}
-                        onPress={() => console.log(index + 1)}>
-                        <List.Item title={item} />
-                      </TouchableRipple>
-                    ))}
+                    <TouchableRipple onPress={openGalerry}>
+                      <List.Item title="Open Galery" />
+                    </TouchableRipple>
+                    <TouchableRipple onPress={openCamera}>
+                      <List.Item title="Open Camera" />
+                    </TouchableRipple>
                   </List.Accordion>
                 </List.Section>
                 <TextInput
@@ -204,6 +263,9 @@ export default function Create() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 20,
+  },
   inputStyle: {
     backgroundColor: 'white',
     height: 70,
