@@ -1,17 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
 import moment from 'moment';
-import NoTicket from '../../components/NoTicket';
 import {useSelector} from 'react-redux';
 import http from '../../helper/http';
 

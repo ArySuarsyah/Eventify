@@ -17,6 +17,7 @@ import MyBooking from './MyBooking/index';
 import ChangePassword from './Auth/ChangePassword';
 import ManageEvent from './Manage/Index';
 import ConfirmPayment from './ConfirmPayment/Index';
+import CreateEvent from './Manage/Create';
 
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -36,6 +37,8 @@ export default function Main() {
       )}
       {token && (
         <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Create" component={CreateEvent} />
+          <Stack.Screen name="ManageEvent" component={ManageEvent} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Booking" component={Booking} />
@@ -47,7 +50,6 @@ export default function Main() {
           <Stack.Screen name="Wishlist" component={Wishlist} />
           <Stack.Screen name="ConfirmPayment" component={ConfirmPayment} />
           <Stack.Screen name="MyBooking" component={MyBooking} />
-          <Stack.Screen name="ManageEvent" component={ManageEvent} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
