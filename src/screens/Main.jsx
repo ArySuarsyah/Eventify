@@ -18,6 +18,7 @@ import ChangePassword from './Auth/ChangePassword';
 import ManageEvent from './Manage/Index';
 import ConfirmPayment from './ConfirmPayment/Index';
 import CreateEvent from './Manage/Create';
+import UpdateEvent from './Manage/Update';
 
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -37,19 +38,20 @@ export default function Main() {
       )}
       {token && (
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Create" component={CreateEvent} />
-          <Stack.Screen name="ManageEvent" component={ManageEvent} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Booking" component={Booking} />
-          <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
-          <Stack.Screen name="Wishlist" component={Wishlist} />
           <Stack.Screen name="ConfirmPayment" component={ConfirmPayment} />
           <Stack.Screen name="MyBooking" component={MyBooking} />
+          <Stack.Screen name="Wishlist" component={Wishlist} />
+          <Stack.Screen name="ManageEvent" component={ManageEvent} />
+          <Stack.Screen name="Create" component={CreateEvent} />
+          <Stack.Screen name="Update" component={UpdateEvent} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
