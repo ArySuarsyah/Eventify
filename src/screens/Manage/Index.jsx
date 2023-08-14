@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
 import NoTicket from '../../components/NoTicket';
-import {TouchableRipple} from 'react-native-paper';
+import {TouchableRipple, Modal, Portal, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +24,8 @@ export default function ManageEvent() {
   const [eventData, setEventData] = useState([]);
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
+  const [message, setMessage] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
 
   const getData = useCallback(async () => {
     const {data} = await http(token).get('/events');
@@ -38,14 +41,54 @@ export default function ManageEvent() {
     navigation.navigate('Create');
   };
 
+  const handleDelete = async item => {
+    try {
+      const {data} = await http(token).delete(`/events/manage/delete/${item}`);
+      if (data.success) {
+        setMessage('Delete Event Success');
+        setVisible(true);
+      }
+    } catch (error) {
+      setVisible(true);
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
   const goToUpdate = item => {
     dispatch(getId(item));
     navigation.navigate('Update');
   };
 
+  const handleConfirm = () => {
+    setVisible(false);
+  };
+
   return (
     <ScrollView>
       <View>
+        <Portal>
+          <Modal
+            visible={visible}
+            contentContainerStyle={styles.containerModalStyle}
+            style={styles.modalStyle}>
+            <View style={styles.messageContainer}>
+              {message === 'Delete Event Success' ? (
+                <MaterialIcons name="check" size={50} color="#018383" />
+              ) : (
+                <MaterialIcons name="close" size={50} color="#ff6b6b" />
+              )}
+              <Text>{message}</Text>
+              <Button
+                mode="elevated"
+                theme={{colors: {primary: '#018383'}}}
+                onPress={handleConfirm}
+                style={styles.sendDataButton}>
+                Ok
+              </Button>
+            </View>
+          </Modal>
+        </Portal>
         <View style={globalStyle.bookingHeader}>
           <AntDesign name="arrowleft" size={30} color="#02A8A8" />
           <Text style={globalStyle.textHeader}>Manage</Text>
@@ -77,7 +120,7 @@ export default function ManageEvent() {
                     <TouchableOpacity onPress={() => goToUpdate(event)}>
                       <Text>Update</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleDelete(event.id)}>
                       <Text>Delete</Text>
                     </TouchableOpacity>
                   </View>
@@ -97,5 +140,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+  },
+  containerModalStyle: {
+    backgroundColor: 'white',
+    height: '30%',
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  messageContainer: {justifyContent: 'center', alignItems: 'center', gap: 15},
+  modalStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
