@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
@@ -17,36 +18,62 @@ import LinearGradient from 'react-native-linear-gradient';
 import globalStyle from '../../assets/globalStyles';
 import userGroup from '../../assets/Image/userGroup.png';
 import map from '../../assets/Image/map.png';
-import {Button} from 'react-native-paper';
+import {Button, TouchableRipple} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import http from '../../helper/http';
 
 export default function Index() {
   const eventId = useSelector(state => state.event.data);
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.token);
+  const {id} = jwt_decode(token);
   const userGroupImg = Image.resolveAssetSource(userGroup).uri;
   const mapImg = Image.resolveAssetSource(map).uri;
   const navigation = useNavigation();
-  const [readMore, setReadMore] = React.useState('false');
+  const [readMore, setReadMore] = React.useState(false);
+  const [iconWishlist, setIconWishlist] = React.useState(false);
 
   const handleReadmore = () => {
     setReadMore(!readMore);
   };
 
+  const addToWishlist = async () => {
+    const form = new URLSearchParams();
+    form.append('eventId', eventId.id);
+    form.append('userId', id);
+    console.log(form);
+    const {data} = await http(token).post('/wishlist', form.toString());
+    if (data.success) {
+      setIconWishlist(!iconWishlist);
+    }
+  };
 
   return (
     <SafeAreaView>
       <ScrollView>
         <View
           style={{
-            width: Dimensions.get('window').width,
+            width: '100%',
             position: 'relative',
             backgroundColor: 'black',
           }}>
-          <View style={{height: 400}}>
+          <View style={{height: 400, zIndex: 10}}>
             <View style={styles.navigation}>
               <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-              <AntDesign name="hearto" size={30} color="#02A8A8" />
+              <TouchableHighlight onPress={addToWishlist}>
+                <View>
+                  {iconWishlist && (
+                    <AntDesign name="heart" size={30} color="#02A8A8" />
+                  )}
+                  {!iconWishlist && (
+                    <AntDesign name="hearto" size={30} color="#02A8A8" />
+                  )}
+                </View>
+              </TouchableHighlight>
             </View>
             <LinearGradient
               colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.95)']}
@@ -139,11 +166,16 @@ export default function Index() {
                   }}
                   style={{width: '100%', height: 200}}
                 />
-                <Button
-                  style={styles.buttonBuy}
-                  onPress={() => navigation.navigate('Booking')}>
-                  <Text style={{color: '#fff'}}>Buy Tickets!</Text>
-                </Button>
+                <View style={styles.buttonBuyParent}>
+                  <Button style={styles.buttonStyle} onPress={addToWishlist}>
+                    <Text style={{color: '#fff'}}>Add To Wishlist</Text>
+                  </Button>
+                  <Button
+                    style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Booking')}>
+                    <Text style={{color: '#fff'}}>Buy Tickets!</Text>
+                  </Button>
+                </View>
               </View>
             </View>
           </View>
@@ -164,13 +196,22 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
-  buttonBuy: {
-    backgroundColor: '#018383',
+  buttonBuyParent: {
     position: 'absolute',
     width: '90%',
     height: '25%',
     justifyContent: 'center',
+    alignItems: 'center',
     bottom: '15%',
     left: '5%',
+    borderRadius: 20,
+    flexDirection: 'row',
+    gap: 10,
+  },
+  buttonStyle: {
+    height: '100%',
+    width: '50%',
+    justifyContent: 'center',
+    backgroundColor: '#018383',
   },
 });
