@@ -58,10 +58,10 @@ export default function Create() {
         console.log('Image picker error: ', response.error);
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
-        // const randomFileName = `Eventify/${generateRandomFileName()} + ${getFileExtension(
-        //   imageUri,
-        // )}`;
-        setImagePick(imageUri);
+        const randomFileName = `Eventify/${generateRandomFileName()}${getFileExtension(
+          imageUri,
+        )}`;
+        setImagePick(randomFileName);
       }
     });
   };
@@ -161,7 +161,7 @@ export default function Create() {
 
   const handleConfirm = () => {
     setVisible(false);
-    // navigation.navigate('ManageEvent');
+    navigation.navigate('ManageEvent');
   };
 
   return (
