@@ -211,7 +211,7 @@ export default function EditProfile() {
       form.append('gender', selectedId);
       form.append('profession', professionId);
       form.append('nationality', selectCountries);
-      form.append('birthdate', dataDate);
+      form.append('birthdate', moment(dataDate).format('YYYYMMDD'));
       // console.log(form);
       const {data} = await http(token).post('/profile', form, {
         headers: {
