@@ -1,15 +1,26 @@
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
-import {TextInput, List, TouchableRipple} from 'react-native-paper';
-import React, {useCallback, useEffect} from 'react';
+import {
+  Modal,
+  Portal,
+  TextInput,
+  List,
+  TouchableRipple,
+  Button,
+} from 'react-native-paper';
+import React from 'react';
 import globalStyle from '../../assets/globalStyles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 // import ImagePicker from 'react-native-image-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useNavigation} from '@react-navigation/native';
 
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import http from '../../helper/http';
+import {useSelector} from 'react-redux';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Event name cannot be empty'),
@@ -18,6 +29,9 @@ const validationSchema = Yup.object({
 });
 
 export default function Create() {
+  const navigation = useNavigation();
+  const token = useSelector(state => state.auth.token);
+
   const [open, setOpen] = React.useState(false);
   const [dataDate, setDataDate] = React.useState(new Date());
   const [location, setLocation] = React.useState('');
@@ -25,13 +39,16 @@ export default function Create() {
   const [category, setCategory] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState('');
   const [imagePick, setImagePick] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
+
+  // const showModal = () => setVisible(true);
+  // const hideModal = () => setVisible(false);
 
   const openGalerry = () => {
     const options = {
       mediaType: 'photo',
       includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
     };
 
     launchImageLibrary(options, response => {
@@ -41,9 +58,10 @@ export default function Create() {
         console.log('Image picker error: ', response.error);
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
-        const randomFileName =
-          generateRandomFileName() + getFileExtension(imageUri);
-        setImagePick(randomFileName);
+        // const randomFileName = `Eventify/${generateRandomFileName()} + ${getFileExtension(
+        //   imageUri,
+        // )}`;
+        setImagePick(imageUri);
       }
     });
   };
@@ -62,6 +80,7 @@ export default function Create() {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
+        console.log(response.uri);
         let imageUri = response.uri || response.assets?.[0]?.uri;
         const randomFileName =
           generateRandomFileName() + getFileExtension(imageUri);
@@ -81,7 +100,7 @@ export default function Create() {
     return `.${filenameParts[filenameParts.length - 1]}`;
   };
 
-  console.log(imagePick);
+  // console.log(imagePick);
 
   const cities = [
     'Jakarta',
@@ -112,23 +131,64 @@ export default function Create() {
     setSelectedCategory(item);
   };
 
-  const chooseFhoto = ['Open Galeri', 'Open Camera'];
-  const doCreate = values => {
-    const form = new FormData();
-    form.append('picture', imagePick);
-    form.append('title', values.name);
-    form.append('price', values.price);
-    form.append('date', dataDate);
-    form.append('cityId', location);
-    form.append('categoryId', category);
-    form.append('description', values.detail);
+  const doCreate = async values => {
+    try {
+      const form = new FormData();
+      form.append('picture', imagePick);
+      form.append('title', values.name);
+      form.append('price', values.price);
+      form.append('date', moment(dataDate).format('YYYYMMDD'));
+      form.append('cityId', location);
+      form.append('categoryId', category);
+      form.append('description', values.detail);
+      console.log(form);
+      const {data} = await http().post('/events/manage/create', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-    console.log(form);
+      if (data.success) {
+        setMessage('Create Event Success');
+        setVisible(true);
+      }
+    } catch (error) {
+      setVisible(true);
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
+  const handleConfirm = () => {
+    setVisible(false);
+    // navigation.navigate('ManageEvent');
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
+        <Portal>
+          <Modal
+            visible={visible}
+            contentContainerStyle={styles.containerModalStyle}
+            style={styles.modalStyle}>
+            <View style={styles.messageContainer}>
+              {message === 'Create Event Success' ? (
+                <MaterialIcons name="check" size={50} color="#018383" />
+              ) : (
+                <MaterialIcons name="close" size={50} color="#ff6b6b" />
+              )}
+              <Text>{message}</Text>
+              <Button
+                mode="elevated"
+                theme={{colors: {primary: '#018383'}}}
+                onPress={handleConfirm}
+                style={styles.sendDataButton}>
+                Ok
+              </Button>
+            </View>
+          </Modal>
+        </Portal>
         <View style={globalStyle.bookingHeader}>
           <AntDesign name="arrowleft" size={30} color="#02A8A8" />
           <Text style={globalStyle.textHeader}>Create</Text>
@@ -150,7 +210,7 @@ export default function Create() {
               errors,
               touched,
             }) => (
-              <View style={{gap: 10}}>
+              <View style={styles.gapMd}>
                 <TextInput
                   label="Name"
                   style={styles.inputStyle}
@@ -226,7 +286,9 @@ export default function Create() {
                   </View>
                 </TouchableRipple>
                 <List.Section style={styles.containerAccordion}>
-                  <List.Accordion title="Choose Fhoto" style={styles.accordion}>
+                  <List.Accordion
+                    title={imagePick ? imagePick : 'Choose Image'}
+                    style={styles.accordion}>
                     <TouchableRipple onPress={openGalerry}>
                       <List.Item title="Open Galery" />
                     </TouchableRipple>
@@ -311,4 +373,18 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
   },
+  containerModalStyle: {
+    backgroundColor: 'white',
+    height: '30%',
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  modalStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  messageContainer: {justifyContent: 'center', alignItems: 'center', gap: 15},
+  gapMd: {gap: 10},
 });
