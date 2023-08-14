@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {
   Modal,
   Portal,
@@ -29,8 +29,8 @@ const validationSchema = Yup.object({
 });
 
 export default function Update() {
-  const navigation = useNavigation();
-  const token = useSelector(state => state.auth.token);
+  // const navigation = useNavigation();
+  // const token = useSelector(state => state.auth.token);
   const eventUpdate = useSelector(state => state.event.data);
 
   const [open, setOpen] = React.useState(false);

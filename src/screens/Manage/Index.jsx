@@ -4,14 +4,13 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   ScrollView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
-import NoTicket from '../../components/NoTicket';
+// import NoTicket from '../../components/NoTicket';
 import {TouchableRipple, Modal, Portal, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
