@@ -133,10 +133,10 @@ export default function Home() {
             <Text style={globalStyle.drawerNavPoint}>My Wishlist</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity onPress={() => navigation.navigate('ManageEvent')}>
           <View style={globalStyle.drawerNavList}>
             <Ionicons name="cog" color="#c0bfbc" size={30} />
-            <Text style={globalStyle.drawerNavPoint}>Settings</Text>
+            <Text style={globalStyle.drawerNavPoint}>Manage Event</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={logout}>
