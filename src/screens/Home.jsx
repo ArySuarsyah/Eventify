@@ -30,7 +30,6 @@ import userImage from '../assets/Image/userDefault.png';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import http from '../helper/http';
-import jwt_decode from 'jwt-decode';
 import EventList from '../components/Home/EventList';
 import {logout as logoutAction} from '../redux/reducers/authReducers';
 import moment from 'moment';
