@@ -58,10 +58,7 @@ export default function Create() {
         console.log('Image picker error: ', response.error);
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
-        const randomFileName = `Eventify/${generateRandomFileName()}${getFileExtension(
-          imageUri,
-        )}`;
-        setImagePick(randomFileName);
+        setImagePick(imageUri);
       }
     });
   };
@@ -80,24 +77,10 @@ export default function Create() {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
-        console.log(response.uri);
         let imageUri = response.uri || response.assets?.[0]?.uri;
-        const randomFileName =
-          generateRandomFileName() + getFileExtension(imageUri);
-        setImagePick(randomFileName);
+        setImagePick(imageUri);
       }
     });
-  };
-
-  const generateRandomFileName = () => {
-    const timestamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 10000);
-    return `${timestamp}_${randomNum}`;
-  };
-
-  const getFileExtension = uri => {
-    const filenameParts = uri.split('.');
-    return `.${filenameParts[filenameParts.length - 1]}`;
   };
 
   // console.log(imagePick);
@@ -133,8 +116,13 @@ export default function Create() {
 
   const doCreate = async values => {
     try {
+      const image = {
+        uri: imagePick,
+        type: 'image/jpeg',
+        name: 'image' + '-' + Date.now() + '.jpg',
+      };
       const form = new FormData();
-      form.append('picture', imagePick);
+      form.append('picture', image);
       form.append('title', values.name);
       form.append('price', values.price);
       form.append('date', moment(dataDate).format('YYYYMMDD'));
