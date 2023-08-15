@@ -32,8 +32,10 @@ export default function MyWishlist() {
             <View key={`item-${item.id}`} style={globalStyle.myBokingContaner}>
               <View style={{gap: 25}}>
                 <View style={globalStyle.dateStyle}>
-                  <Text style={globalStyle.date}>15</Text>
-                  <Text>Wed</Text>
+                  <Text style={globalStyle.date}>
+                    {moment(item.date).format('DD')}
+                  </Text>
+                  <Text>{moment(item.date).format('ddd')}</Text>
                 </View>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <AntDesign name="heart" size={25} color="#02A8A8" />
