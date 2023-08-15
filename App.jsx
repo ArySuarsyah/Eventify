@@ -12,7 +12,6 @@ import SplashScreen from 'react-native-splash-screen';
 
 PushNotification.configure({
   onRegister: function (token) {
-    console.log('TOKEN:', token);
     store.dispatch(setToken(token));
   },
 });
