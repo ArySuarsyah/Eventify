@@ -82,8 +82,6 @@ export default function Create() {
     });
   };
 
-  // console.log(imagePick);
-
   const cities = [
     'Jakarta',
     'Bandung',
@@ -128,7 +126,6 @@ export default function Create() {
       form.append('cityId', location);
       form.append('categoryId', category);
       form.append('description', values.detail);
-      console.log(form);
       const {data} = await http().post('/events/manage/create', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -142,7 +139,6 @@ export default function Create() {
     } catch (error) {
       setVisible(true);
       setMessage(error.message);
-      console.log(error);
     }
   };
 

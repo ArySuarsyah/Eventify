@@ -13,7 +13,6 @@ const payment = createSlice({
       state.dataPayment = action.payload;
     },
     selectPayment: (state, action) => {
-      console.log(action.payload);
       state.paymentMethod = action.payload;
     },
   },

@@ -50,7 +50,6 @@ export default function ManageEvent() {
     } catch (error) {
       setVisible(true);
       setMessage(error.message);
-      console.log(error);
     }
   };
 

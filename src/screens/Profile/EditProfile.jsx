@@ -256,7 +256,7 @@ export default function EditProfile() {
       form.append('profession', professionId);
       form.append('nationality', selectCountries);
       form.append('birthdate', moment(dataDate).format('YYYYMMDD'));
-      console.log(form);
+
       const {data} = await http(token).post('/profile', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -270,7 +270,6 @@ export default function EditProfile() {
     } catch (error) {
       setSuccess(true);
       setMessage(error.message);
-      console.log(error);
     }
   };
 
@@ -293,8 +292,6 @@ export default function EditProfile() {
   //     setRefreshing(false);
   //   }, 2000);
   // }, []);
-
-  // console.log(user);
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} />}>

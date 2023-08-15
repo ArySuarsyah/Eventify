@@ -11,7 +11,7 @@ export const asyncLogin = createAsyncThunk(
       form.append('confirmPassword', payload.confirmPassword);
 
       const {data} = await http().post('/auth/login', form.toString());
-      console.log(form);
+
       return data.results.token;
     } catch (error) {
       const message = error?.response?.message;

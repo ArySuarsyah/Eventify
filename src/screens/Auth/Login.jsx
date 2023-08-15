@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   View,
   Text,
@@ -7,7 +8,7 @@ import {
 } from 'react-native';
 
 import styles from '../../assets/globalStyles';
-import {Link, useTheme} from '@react-navigation/native';
+import {Link} from '@react-navigation/native';
 import React, {useState} from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -19,7 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AlertMessage from '../../components/AlertMessage';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -38,7 +39,7 @@ export default function Login() {
   const doLogin = values => {
     dispatch(loginAction(values));
   };
-  console.log(token);
+
   return (
     <SafeAreaView style={styles.saveArea}>
       <ScrollView style={styles.outer}>

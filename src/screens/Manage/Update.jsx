@@ -101,8 +101,6 @@ export default function Update() {
     return `.${filenameParts[filenameParts.length - 1]}`;
   };
 
-  // console.log(imagePick);
-
   const cities = [
     'Jakarta',
     'Bandung',
@@ -142,7 +140,6 @@ export default function Update() {
       form.append('cityId', location);
       form.append('categoryId', category);
       form.append('description', values.detail);
-      console.log(form);
       const {data} = await http().patch(
         `/events/manage/update/${eventUpdate.id}`,
         form,
@@ -160,7 +157,6 @@ export default function Update() {
     } catch (error) {
       setVisible(true);
       setMessage(error.message);
-      console.log(error);
     }
   };
 
