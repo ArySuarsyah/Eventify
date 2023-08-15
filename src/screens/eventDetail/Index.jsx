@@ -143,7 +143,9 @@ export default function Index() {
             }}>
             <View style={{gap: 10}}>
               <Text style={{fontSize: 30}}>Event Detail</Text>
-              <Text numberOfLines={readMore ? 6 : 20} style={{fontSize: 20}}>
+              <Text
+                numberOfLines={readMore ? 20 : 3}
+                style={{fontSize: 20, textAlign: 'justify'}}>
                 {eventId.description}
               </Text>
               <TouchableHighlight>
