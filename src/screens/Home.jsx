@@ -33,7 +33,7 @@ import http from '../helper/http';
 import jwt_decode from 'jwt-decode';
 import EventList from '../components/Home/EventList';
 import {logout as logoutAction} from '../redux/reducers/authReducers';
-import moment, {calendarFormat} from 'moment';
+import moment from 'moment';
 import Foundation from 'react-native-vector-icons/dist/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
 import {getId} from '../redux/reducers/event';
@@ -45,7 +45,6 @@ export default function Home() {
   const [user, setUser] = React.useState([]);
   const [eventList, setEventList] = React.useState([]);
   const drawer = React.useRef(null);
-  const {id} = jwt_decode(token);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
   const navigation = useNavigation();
   const deviceToken = useSelector(state => state.deviceToken.deviceToken);

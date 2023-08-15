@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import {
   Modal,
