@@ -261,7 +261,7 @@ const globalStyle = StyleSheet.create({
   dateStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#cecece',
+    backgroundColor: '#eee',
     borderRadius: 10,
     width: 50,
     height: 60,
@@ -269,7 +269,7 @@ const globalStyle = StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.9,
     shadowRadius: 22,
-    elevation: 1,
+    elevation: 10,
   },
   date: {fontSize: 14, color: '#F5DEA3'},
   fontData: {fontSize: 18},
