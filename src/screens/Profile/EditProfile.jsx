@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -9,7 +10,7 @@ import {
   Dimensions,
   RefreshControl,
 } from 'react-native';
-import {Button, List, TouchableRipple} from 'react-native-paper';
+import {Button, List, TouchableRipple, Modal, Portal} from 'react-native-paper';
 import globalStyle from '../../assets/globalStyles';
 import React from 'react';
 import userImage from '../../assets/Image/userDefault.png';
@@ -21,6 +22,8 @@ import {useSelector} from 'react-redux';
 import http from '../../helper/http';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default function EditProfile() {
   const token = useSelector(state => state.auth.token);
@@ -43,8 +46,11 @@ export default function EditProfile() {
   const [message, setMessage] = React.useState('');
   const [success, setSuccess] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  // const [editProfession, setEditProfession] = React.useState(false);
-  // const [editNationality, setEditNationality] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState('');
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
 
   const getUser = React.useCallback(async () => {
     const {data} = await http(token).get('/profile');
@@ -72,12 +78,44 @@ export default function EditProfile() {
     setEditGender(!editGender);
   };
 
-  // const handleEditProfession = () => {
-  //   setEditProfession(!editProfession);
-  // };
-  // const handleEditNationality = () => {
-  //   setEditNationality(!editNationality);
-  // };
+  const openGalerry = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+
+  const openCamera = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchCamera(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+
   const radioButtons = React.useMemo(
     () => [
       {
@@ -202,17 +240,23 @@ export default function EditProfile() {
 
   const handleButtonSave = async () => {
     try {
+      const picture = {
+        uri: selectedImage,
+        type: 'image/jpeg',
+        name: 'image' + '-' + Date.now() + '.jpg',
+      };
+      const gender = selectedId === 'Male' ? true : false;
       const form = new FormData();
-      // form.append('picture', picture);
+      form.append('picture', picture);
       form.append('fullName', fullName);
       form.append('userName', username);
       form.append('email', emailUser);
       form.append('phoneNumber', userPhone);
-      form.append('gender', selectedId);
+      form.append('gender', gender);
       form.append('profession', professionId);
       form.append('nationality', selectCountries);
       form.append('birthdate', moment(dataDate).format('YYYYMMDD'));
-      // console.log(form);
+      console.log(form);
       const {data} = await http(token).post('/profile', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -237,10 +281,10 @@ export default function EditProfile() {
       setTimeout(() => {
         setRefreshing(false);
       }, 2000);
-      handleEditName(false);
-      handleEditUserNamae(false);
-      handleEditEmail(false);
-      handleEditPhone(false);
+      setEditFullname(false);
+      setEditUserName(false);
+      setEdirEmail(false);
+      setEditPhone(false);
     }
   };
 
@@ -277,32 +321,74 @@ export default function EditProfile() {
           <Text style={globalStyle.textHeader}>Edit Profile</Text>
         </View>
         <View style={styles.main}>
-          <View style={globalStyle.userImage}>
-            <View style={styles.ImageParent}>
-              <LinearGradient
-                colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.55)']}
-                style={globalStyle.bgGradient}
-              />
-              {user?.pictuer && (
+          <Portal>
+            <Modal
+              contentContainerStyle={{
+                backgroundColor: 'white',
+                width: '80%',
+              }}
+              style={{alignItems: 'center'}}
+              visible={visible}
+              onDismiss={hideModal}>
+              <TouchableRipple onPress={openGalerry}>
+                <View style={styles.imagePicker}>
+                  <Text style={styles.imagePickText}>Choose From Galery</Text>
+                  <FeatherIcon name="upload" size={20} color="#02A8A8" />
+                </View>
+              </TouchableRipple>
+              <TouchableRipple onPress={openCamera}>
+                <View style={styles.imagePicker}>
+                  <Text style={styles.imagePickText}>Choose From Camera</Text>
+                  <FeatherIcon name="camera" size={20} color="#02A8A8" />
+                </View>
+              </TouchableRipple>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <TouchableRipple
+                  style={styles.confirm}
+                  onPress={() => console.log('ok')}>
+                  <Text style={{color: 'white'}}>OK</Text>
+                </TouchableRipple>
+              </View>
+            </Modal>
+          </Portal>
+          <TouchableOpacity onPress={showModal}>
+            <View style={globalStyle.userImage}>
+              <View style={styles.ImageParent}>
+                <View style={{position: 'absolute', zIndex: 1}}>
+                  <FeatherIcon name="camera" size={30} color="#fff" />
+                </View>
+                <LinearGradient
+                  colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.55)']}
+                  style={globalStyle.bgGradient}
+                />
+                {/* {user?.pictuer && (
+                  <Image
+                    source={{
+                      uri: USER_DEFAULT_IMAGE,
+                    }}
+                    width={100}
+                    height={100}
+                  />
+                )} */}
+
                 <Image
                   source={{
-                    uri: `http://localhost:8888/uploads/${user.picture}`,
+                    uri: user.picture
+                      ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
+                      : USER_DEFAULT_IMAGE,
                   }}
                   width={100}
                   height={100}
                 />
-              )}
-              {!user?.picture && (
-                <Image
-                  source={{
-                    uri: USER_DEFAULT_IMAGE,
-                  }}
-                  width={100}
-                  height={100}
-                />
-              )}
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.profileDataContainer}>
             <View style={styles.profileData}>
               {editFullname && (
@@ -458,7 +544,9 @@ export default function EditProfile() {
                 )}
                 {!open && (
                   <Text style={styles.titleStyle}>
-                    {user?.birthdate ? user.birthdate : 'Add birthdate'}
+                    {user?.birthdate
+                      ? moment(user.birthdate).format('YYYY-MM-DD')
+                      : 'Add birthdate'}
                   </Text>
                 )}
                 <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -524,6 +612,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   ImageParent: {
+    position: 'relative',
     width: '100%',
     height: '100%',
     borderRadius: 100,
@@ -582,5 +671,21 @@ const styles = StyleSheet.create({
   },
   hidden: {
     display: 'none',
+  },
+  imagePicker: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+  },
+  imagePickText: {
+    color: 'black',
+    fontSize: 15,
+  },
+  confirm: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    backgroundColor: '#02A8A8',
   },
 });

@@ -136,7 +136,7 @@ const globalStyle = StyleSheet.create({
   },
   redColor: {color: '#f03e3e'},
   bgGradient: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     width: '100%',
     height: '100%',
     position: 'absolute',
