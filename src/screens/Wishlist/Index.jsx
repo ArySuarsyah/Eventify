@@ -4,7 +4,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import globalStyle from '../../assets/globalStyles';
 import moment from 'moment';
-import NoTicket from '../../components/NoTicket';
 import http from '../../helper/http';
 import {useSelector} from 'react-redux';
 
@@ -15,9 +14,8 @@ export default function MyWishlist() {
   const getWishlist = useCallback(async () => {
     const {data} = await http(token).get('/wishlist/list');
     setWishlistData(data.results);
-    console.log(data.results);
   }, [token]);
-  console.log(wishlistData.title);
+
   useEffect(() => {
     getWishlist();
   }, [getWishlist]);
@@ -31,7 +29,7 @@ export default function MyWishlist() {
       <View style={globalStyle.dataContainer}>
         {wishlistData.map(item => {
           return (
-            <View key={item.id} style={globalStyle.myBokingContaner}>
+            <View key={`item-${item.id}`} style={globalStyle.myBokingContaner}>
               <View style={{gap: 25}}>
                 <View style={globalStyle.dateStyle}>
                   <Text style={globalStyle.date}>15</Text>
