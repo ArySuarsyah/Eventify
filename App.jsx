@@ -8,6 +8,7 @@ import {PersistGate} from 'redux-persist/es/integration/react';
 
 import PushNotification from 'react-native-push-notification';
 import {setToken} from './src/redux/reducers/deviceToken';
+import SplashScreen from 'react-native-splash-screen';
 
 PushNotification.configure({
   onRegister: function (token) {
@@ -17,6 +18,7 @@ PushNotification.configure({
 });
 
 const App = () => {
+  SplashScreen.hide();
   return (
     <Provider store={store}>
       <PaperProvider>

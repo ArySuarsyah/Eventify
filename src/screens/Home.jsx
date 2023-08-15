@@ -211,7 +211,7 @@ export default function Home() {
                         <EventList
                           key={`event-${event.id}`}
                           title={event?.title}
-                          date={event?.createdAt}
+                          date={event?.date}
                           id={event?.id}
                           image={`https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`}
                           event={event}
