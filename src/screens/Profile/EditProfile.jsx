@@ -342,16 +342,8 @@ export default function EditProfile() {
                   <FeatherIcon name="camera" size={20} color="#02A8A8" />
                 </View>
               </TouchableRipple>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <TouchableRipple
-                  style={styles.confirm}
-                  onPress={() => console.log('ok')}>
+              <View style={styles.confirmParent}>
+                <TouchableRipple style={styles.confirm} onPress={hideModal}>
                   <Text style={{color: 'white'}}>OK</Text>
                 </TouchableRipple>
               </View>
@@ -687,5 +679,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     backgroundColor: '#02A8A8',
+  },
+  confirmParent: {
+    margin: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
