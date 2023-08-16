@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1050756564531:android:b090083b65b2b2adff8546",
+        "mobilesdk_app_id": "1:1050756564531:android:edf65fa132bc4afeff8546",
         "android_client_info": {
-          "package_name": "com.eventify"
+          "package_name": "com.arsrsyh.eventify"
         }
       },
       "oauth_client": [
