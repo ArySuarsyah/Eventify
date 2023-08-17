@@ -273,6 +273,48 @@ const globalStyle = StyleSheet.create({
   },
   date: {fontSize: 14, color: '#F5DEA3'},
   fontData: {fontSize: 18},
+  containerStyle: {
+    backgroundColor: 'white',
+    padding: 20,
+    height: '30%',
+    width: '60%',
+    alignItems: 'center',
+    gap: 20,
+  },
+  modalStyle: {
+    borderWidth: 1,
+    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  buttonHeight: {height: 40},
+  iconSuccess: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#009acd',
+  },
+  button: {
+    width: '30%',
+    backgroundColor: '#018383',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textCenter: {textAlign: 'center'},
+  iconFailed: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ee6363',
+  },
+  colorWhite: {
+    color: 'white',
+  },
 });
 
 export default globalStyle;
