@@ -24,8 +24,10 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useNavigation} from '@react-navigation/native';
 
 export default function EditProfile() {
+  const navigation = useNavigation();
   const token = useSelector(state => state.auth.token);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
   const [user, setUser] = React.useState([]);
@@ -314,7 +316,9 @@ export default function EditProfile() {
           </View>
         </View>
         <View style={globalStyle.bookingHeader}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          <TouchableRipple onPress={() => navigation.goBack()}>
+            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          </TouchableRipple>
           <Text style={globalStyle.textHeader}>Edit Profile</Text>
         </View>
         <View style={styles.main}>

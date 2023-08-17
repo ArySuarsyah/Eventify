@@ -1,14 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
+import {TouchableRipple} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
 
 export default function MyBooking() {
+  const navigation = useNavigation();
   const [dataHistory, setDataHistory] = useState([]);
   const token = useSelector(state => state.auth.token);
   const getData = useCallback(async () => {
@@ -24,7 +27,9 @@ export default function MyBooking() {
   return (
     <View>
       <View style={globalStyle.bookingHeader}>
-        <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+        <TouchableRipple onPress={() => navigation.goBack()}>
+          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+        </TouchableRipple>
         <Text style={globalStyle.textHeader}>My Booking</Text>
       </View>
       <View style={globalStyle.dataContainer}>

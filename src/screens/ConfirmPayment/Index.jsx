@@ -106,7 +106,9 @@ export default function ConfirmPayment() {
         </Portal>
         <View style={styles.container}>
           <View style={globalStyle.bookingHeader}>
-            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+            <TouchableRipple onPress={() => navigation.goBack()}>
+              <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+            </TouchableRipple>
             <Text style={globalStyle.textHeader}>Confirm</Text>
           </View>
           <View style={styles.accordionParent}>

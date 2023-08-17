@@ -9,11 +9,12 @@ import card from '../../assets/Image/card.png';
 import {useSelector} from 'react-redux';
 import http from '../../helper/http';
 import {TouchableRipple} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const Profile = () => {
   const token = useSelector(state => state.auth.token);
   const navigation = useNavigation();
+  const route = useRoute();
   const [user, setUser] = React.useState([]);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
 
@@ -30,9 +31,11 @@ const Profile = () => {
     <View style={{gap: 50}}>
       <View style={{paddingHorizontal: 20, gap: 20, paddingTop: 20}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          <TouchableRipple onPress={() => navigation.goBack()}>
+            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          </TouchableRipple>
           <Text style={{width: '80%', fontSize: 18, textAlign: 'center'}}>
-            Profile
+            {route.name}
           </Text>
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', gap: 20}}>

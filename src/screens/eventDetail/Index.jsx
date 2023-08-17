@@ -45,7 +45,7 @@ export default function Index() {
     const form = new URLSearchParams();
     form.append('eventId', eventId.id);
     form.append('userId', id);
-    console.log(form);
+
     const {data} = await http(token).post('/wishlist', form.toString());
     if (data.success) {
       setIconWishlist(!iconWishlist);
@@ -63,7 +63,9 @@ export default function Index() {
           }}>
           <View style={{height: 400, zIndex: 10}}>
             <View style={styles.navigation}>
-              <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+              <TouchableRipple onPress={() => navigation.goBack()}>
+                <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+              </TouchableRipple>
               <TouchableHighlight onPress={addToWishlist}>
                 <View>
                   {iconWishlist && (
@@ -85,16 +87,6 @@ export default function Index() {
               }}
               style={globalStyle.imgEvent}
             />
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 20,
-                paddingTop: 10,
-                backgroundColor:"black",
-              }}>
-
-            </View> */}
             <View
               style={{
                 position: 'absolute',
@@ -169,9 +161,6 @@ export default function Index() {
                   style={{width: '100%', height: 200}}
                 />
                 <View style={styles.buttonBuyParent}>
-                  <Button style={styles.buttonStyle} onPress={addToWishlist}>
-                    <Text style={{color: '#fff'}}>Add To Wishlist</Text>
-                  </Button>
                   <Button
                     style={styles.buttonStyle}
                     onPress={() => navigation.navigate('Booking')}>
@@ -191,7 +180,7 @@ const styles = StyleSheet.create({
   navigation: {
     position: 'absolute',
     top: 0,
-    zIndex: 1,
+    zIndex: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -212,7 +201,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     height: '100%',
-    width: '50%',
+    width: '90%',
     justifyContent: 'center',
     backgroundColor: '#018383',
   },

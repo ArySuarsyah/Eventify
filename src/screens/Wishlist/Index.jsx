@@ -6,8 +6,12 @@ import globalStyle from '../../assets/globalStyles';
 import moment from 'moment';
 import http from '../../helper/http';
 import {useSelector} from 'react-redux';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {TouchableRipple} from 'react-native-paper';
 
 export default function MyWishlist() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const token = useSelector(state => state.auth.token);
   const [wishlistData, setWishlistData] = useState([]);
 
@@ -23,8 +27,10 @@ export default function MyWishlist() {
   return (
     <View>
       <View style={globalStyle.bookingHeader}>
-        <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-        <Text style={globalStyle.textHeader}>My Wishlist</Text>
+        <TouchableRipple onPress={() => navigation.goBack()}>
+          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+        </TouchableRipple>
+        <Text style={globalStyle.textHeader}>{route.name}</Text>
       </View>
       <View style={globalStyle.dataContainer}>
         {wishlistData.map(item => {

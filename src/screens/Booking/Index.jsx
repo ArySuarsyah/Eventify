@@ -94,9 +94,6 @@ export default function Booking() {
       quantity: quantity,
       price: totalPrice,
     };
-    // form.append('section', section);
-    // form.append('quantity', quantity);
-    // form.append('price', totalPrice);
 
     dispatch(getData(form));
     navigation.navigate('Payment');
@@ -105,7 +102,9 @@ export default function Booking() {
   return (
     <View>
       <View style={globalStyle.bookingHeader}>
-        <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+        <TouchableRipple onPress={() => navigation.goBack()}>
+          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+        </TouchableRipple>
         <Text style={globalStyle.textHeader}>Checkout</Text>
       </View>
       <View style={globalStyle.stadiumContainer}>

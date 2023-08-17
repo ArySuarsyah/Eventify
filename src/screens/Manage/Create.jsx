@@ -174,7 +174,9 @@ export default function Create() {
           </Modal>
         </Portal>
         <View style={globalStyle.bookingHeader}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          <TouchableRipple onPress={() => navigation.goBack()}>
+            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          </TouchableRipple>
           <Text style={globalStyle.textHeader}>Create</Text>
         </View>
         <View style={globalStyle.dataContainer}>

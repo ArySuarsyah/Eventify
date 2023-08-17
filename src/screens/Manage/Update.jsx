@@ -12,7 +12,7 @@ import React from 'react';
 import globalStyle from '../../assets/globalStyles';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
-// import ImagePicker from 'react-native-image-picker';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 
@@ -30,7 +30,7 @@ const validationSchema = Yup.object({
 });
 
 export default function Update() {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   // const token = useSelector(state => state.auth.token);
   const eventUpdate = useSelector(state => state.event.data);
 
@@ -82,7 +82,6 @@ export default function Update() {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
-        console.log(response.uri);
         let imageUri = response.uri || response.assets?.[0]?.uri;
         const randomFileName =
           generateRandomFileName() + getFileExtension(imageUri);
@@ -192,7 +191,9 @@ export default function Update() {
           </Modal>
         </Portal>
         <View style={globalStyle.bookingHeader}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          <TouchableRipple onPress={() => navigation.goBack()}>
+            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
+          </TouchableRipple>
           <Text style={globalStyle.textHeader}>Update Event</Text>
         </View>
         <View style={globalStyle.dataContainer}>
