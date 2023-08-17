@@ -1,4 +1,4 @@
-package com.eventify;
+package com.arsrsyh.eventify;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

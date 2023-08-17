@@ -1,4 +1,4 @@
-package com.eventify;
+package com.arsrsyh.eventify;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

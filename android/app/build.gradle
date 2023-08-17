@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.eventify"
+    namespace "com.arsrsyh.eventify"
     defaultConfig {
-        applicationId "com.eventify"
+        applicationId "com.arsrsyh.eventify"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
