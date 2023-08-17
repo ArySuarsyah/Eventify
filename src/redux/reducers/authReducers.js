@@ -16,19 +16,25 @@ const auth = createSlice({
     logout: () => {
       return initialState;
     },
+    deleteMessage: state => {
+      state.errorMessage = '';
+    },
   },
   extraReducers: builder => {
-    builder.addCase(asyncLogin.pending, state => {
-      state.errorMessage = '';
+    builder.addCase(asyncLogin.pending, (state, action) => {
+      console.log(action.payload);
+      state.errorMessage = action.payload;
     });
     builder.addCase(asyncLogin.fulfilled, (state, action) => {
       state.token = action.payload;
     });
     builder.addCase(asyncLogin.rejected, (state, action) => {
+      console.log(action.payload);
+
       state.errorMessage = action.payload;
     });
-    builder.addCase(asyncRegister.pending, state => {
-      state.errorMessage = '';
+    builder.addCase(asyncRegister.pending, (state, action) => {
+      state.errorMessage = action.payload;
     });
     builder.addCase(asyncRegister.fulfilled, (state, action) => {
       state.token = action.payload;
@@ -39,5 +45,5 @@ const auth = createSlice({
   },
 });
 
-export const {login, logout} = auth.actions;
+export const {login, logout, deleteMessage} = auth.actions;
 export default auth.reducer;

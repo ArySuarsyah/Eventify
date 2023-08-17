@@ -6,19 +6,27 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import {
+  Checkbox,
+  Modal,
+  Portal,
+  TouchableRipple,
+  Button,
+} from 'react-native-paper';
 import styles from '../../assets/globalStyles';
 import {Link} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Checkbox} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import AlertMessage from '../../components/AlertMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {asyncRegister as registerAction} from '../../redux/actions/auth';
-// import { login } from '../../redux/reducers/authReducers';
-import {useNavigation} from '@react-navigation/native';
+import {deleteMessage} from '../../redux/reducers/authReducers';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import Feather from 'react-native-vector-icons/dist/Feather';
+import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -26,14 +34,27 @@ const validationSchema = Yup.object({
   confirmPassword: Yup.string().required('Confirm password cannot be empty'),
 });
 
-export default function Register() {
+export default function Login() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowCoonfirmPassword] = useState(false);
   const [checked, setChecked] = useState(false);
-  const errorMessage = useSelector(state => state.auth.errorMessage);
-  const token = useSelector(state => state.auth.token);
+  const message = useSelector(state => state.auth.errorMessage);
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+  // const clearData = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem('auth');
+  //     console.log('Data berhasil dihapus dari AsyncStorage.');
+  //   } catch (error) {
+  //     console.error('Terjadi kesalahan saat menghapus data:', error);
+  //   }
+  // };
 
   const handleShowPass = () => {
     setShowPassword(!showPassword);
@@ -47,6 +68,17 @@ export default function Register() {
     dispatch(registerAction(values));
   };
 
+  useEffect(() => {
+    if (route.name === 'Register') {
+      console.log('ok');
+    }
+  }, [message, route.name]);
+
+  const handleOkey = () => {
+    // clearData();
+    dispatch(deleteMessage());
+    hideModal();
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -54,7 +86,34 @@ export default function Register() {
           <View style={styles.registerHeader}>
             <Text style={styles.authTitle}>Sign Up</Text>
             <View style={styles.subTitleContainer}>
-              <AlertMessage />
+              <Portal>
+                <Modal
+                  visible={visible}
+                  onDismiss={hideModal}
+                  contentContainerStyle={styles.containerStyle}
+                  style={styles.modalStyle}>
+                  {message && (
+                    <View style={styles.iconFailed}>
+                      <AntDesign name="close" color="white" size={30} />
+                    </View>
+                  )}
+                  <Text style={styles.textCenter}>
+                    {message === 'Request failed with status code 400' &&
+                      'Password and Confirm Password do not match'}
+                    {message === 'Request failed with status code 409' &&
+                      'Email already used!'}
+                    {message === 'Network Error' &&
+                      'Check your internet connection'}
+                  </Text>
+                  <TouchableRipple
+                    style={styles.buttonHeight}
+                    onPress={handleOkey}>
+                    <Button style={styles.button}>
+                      <Text style={styles.colorWhite}>Ok</Text>
+                    </Button>
+                  </TouchableRipple>
+                </Modal>
+              </Portal>
               <Text style={styles.subtitle}>Already have an account?</Text>
               <TouchableOpacity>
                 <Link to="/Login" style={styles.subtitleLink}>
@@ -63,9 +122,6 @@ export default function Register() {
               </TouchableOpacity>
             </View>
           </View>
-          {errorMessage && (
-            <AlertMessage variant="error">{errorMessage}</AlertMessage>
-          )}
           <Formik
             initialValues={{
               fullName: '',

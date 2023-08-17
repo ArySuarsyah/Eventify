@@ -9,7 +9,7 @@ import {
 
 import styles from '../../assets/globalStyles';
 import {Link} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -17,10 +17,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {asyncLogin as loginAction} from '../../redux/actions/auth';
 import {useDispatch, useSelector} from 'react-redux';
-import AlertMessage from '../../components/AlertMessage';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Portal, Modal, Button, TouchableRipple} from 'react-native-paper';
+import {deleteMessage} from '../../redux/reducers/authReducers';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -29,15 +30,38 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const navigate = useNavigation();
+  const route = useRoute();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
+  const errorMessage = useSelector(state => state.auth.errorMessage);
   const [showPassword, setShowPassword] = useState(false);
+  const [visible, setVisible] = React.useState(false);
+
+  console.log(`error: ${errorMessage}`);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   const handleShowPass = () => {
     setShowPassword(!showPassword);
   };
-
+  console.log(route.name);
   const doLogin = values => {
     dispatch(loginAction(values));
+  };
+
+  useEffect(() => {
+    if (route.name === 'Login') {
+      if (errorMessage) {
+        showModal();
+      }
+    }
+  }, [errorMessage, route.name]);
+
+  const handleOkey = () => {
+    // clearData();
+    dispatch(deleteMessage());
+    hideModal();
   };
 
   return (
@@ -50,10 +74,30 @@ export default function Login() {
               <Text style={styles.subtitle}>Hi, Welcome back to Eventify!</Text>
             </View>
           </View>
-          {/* {!errorMessage && (
-            <AlertMessage variant="error">Wrong Email or Password</AlertMessage>
-          )}
-          {errorMessage && <AlertMessage variant="error">Login success</AlertMessage>} */}
+          <Portal>
+            <Modal
+              visible={visible}
+              onDismiss={hideModal}
+              contentContainerStyle={styles.containerStyle}
+              style={styles.modalStyle}>
+              {errorMessage === 'Request failed with status code 400' && (
+                <View style={styles.iconFailed}>
+                  <AntDesign name="close" color="white" size={30} />
+                </View>
+              )}
+              <Text style={styles.textCenter}>
+                {errorMessage === 'Request failed with status code 400' &&
+                  'Wrong email or password'}
+                {errorMessage === 'Network Error' &&
+                  'Check your internet connection'}
+              </Text>
+              <TouchableRipple style={styles.buttonHeight} onPress={handleOkey}>
+                <Button style={styles.button}>
+                  <Text style={styles.colorWhite}>Ok</Text>
+                </Button>
+              </TouchableRipple>
+            </Modal>
+          </Portal>
           <Formik
             initialValues={{
               email: '',
