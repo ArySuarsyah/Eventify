@@ -9,6 +9,7 @@ import moment from 'moment';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
+import NoTicket from '../../components/NoTicket';
 
 export default function MyBooking() {
   const navigation = useNavigation();
@@ -39,27 +40,30 @@ export default function MyBooking() {
             <Text style={globalStyle.monthData}>{moment().format('MMMM')}</Text>
           </View>
         </View>
-        {dataHistory.map(history => {
-          return (
-            <View key={history.id} style={globalStyle.myBokingContaner}>
-              <View style={globalStyle.dateStyle}>
-                <Text style={globalStyle.date}>15</Text>
-                <Text>Wed</Text>
+        {dataHistory &&
+          dataHistory.map(history => {
+            return (
+              <View key={history.id} style={globalStyle.myBokingContaner}>
+                <View style={globalStyle.dateStyle}>
+                  <Text style={globalStyle.date}>15</Text>
+                  <Text>Wed</Text>
+                </View>
+                <View style={{gap: 10}}>
+                  <Text style={globalStyle.fontData}>{history.title}</Text>
+                  <Text>{history.location}</Text>
+                  <Text>
+                    {moment(history.createdAt).format(
+                      'ddd, DD MMM YYYY, h:mm a',
+                    )}
+                  </Text>
+                  <TouchableOpacity>
+                    <Text>detail</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={{gap: 10}}>
-                <Text style={globalStyle.fontData}>{history.title}</Text>
-                <Text>{history.location}</Text>
-                <Text>
-                  {moment(history.createdAt).format('ddd, DD MMM YYYY, h:mm a')}
-                </Text>
-                <TouchableOpacity>
-                  <Text>detail</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          );
-        })}
-        {/* <NoTicket /> */}
+            );
+          })}
+        {!dataHistory && <NoTicket />}
       </View>
     </View>
   );
