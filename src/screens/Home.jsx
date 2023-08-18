@@ -228,9 +228,13 @@ export default function Home() {
               />
             </View>
             <View style={styles.dateParent}>
-              {eventList.map(item => {
+              {eventList.map((item, index) => {
                 return (
-                  <View key={item.id} style={styles.dateStyle}>
+                  <View
+                    key={item.id}
+                    style={
+                      index === 2 ? styles.dateStyleChoose : styles.dateStyle
+                    }>
                     <Text style={styles.colorDate}>
                       {moment(item.date).format('DD')}
                     </Text>
@@ -469,6 +473,14 @@ const styles = StyleSheet.create({
   gap: {gap: 10, paddingHorizontal: 20},
   container: {paddingTop: 20, backgroundColor: '#018383', position: 'relative'},
   dateStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '15%',
+    height: 70,
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  dateStyleChoose: {
     alignItems: 'center',
     justifyContent: 'center',
     width: '15%',
