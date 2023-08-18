@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
 import {
   View,
   Text,
@@ -8,8 +7,6 @@ import {
   ScrollView,
   TouchableHighlight,
   StyleSheet,
-  Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
@@ -22,13 +19,13 @@ import {Button, TouchableRipple} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+// import {useDispatch} from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import http from '../../helper/http';
 
 export default function Index() {
   const eventId = useSelector(state => state.event.data);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
   const {id} = jwt_decode(token);
   const userGroupImg = Image.resolveAssetSource(userGroup).uri;
