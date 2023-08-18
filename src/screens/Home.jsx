@@ -140,24 +140,15 @@ export default function Home() {
     <View style={[globalStyle.navigationContainer]}>
       <View style={globalStyle.profileNavigation}>
         <View style={globalStyle.drawerUserImage}>
-          {!user?.picture && (
-            <Image
-              source={{
-                uri: USER_DEFAULT_IMAGE,
-              }}
-              width={70}
-              height={70}
-            />
-          )}
-          {user.picture && (
-            <Image
-              source={{
-                uri: `http://localhost:8888/uploads/${user.picture}`,
-              }}
-              width={70}
-              height={70}
-            />
-          )}
+          <Image
+            source={{
+              uri: user.picture
+                ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
+                : USER_DEFAULT_IMAGE,
+            }}
+            width={70}
+            height={70}
+          />
         </View>
         <View>
           <Text style={globalStyle.subtitle}>{user.fullName}</Text>
@@ -172,7 +163,7 @@ export default function Home() {
             <Text style={globalStyle.drawerNavPoint}>Profile</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Booking')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MyBooking')}>
           <View style={globalStyle.drawerNavList}>
             <Octicons name="checklist" color="#c0bfbc" size={30} />
             <Text style={globalStyle.drawerNavPoint}>My Booking</Text>
