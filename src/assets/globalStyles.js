@@ -242,7 +242,12 @@ const globalStyle = StyleSheet.create({
     lineHeight: 20,
     fontSize: 15,
   },
-  dataContainer: {paddingHorizontal: 20, gap: 50, paddingTop: 50},
+  dataContainer: {
+    paddingHorizontal: 20,
+    gap: 50,
+    paddingTop: 50,
+    paddingBottom: 20,
+  },
   monthParent: {
     borderRadius: 20,
     width: '30%',
