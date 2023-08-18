@@ -43,17 +43,12 @@ export default function EditProfile() {
   const user = useSelector(state => state.profile.data);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
   const [editFullname, setEditFullname] = React.useState(false);
-  const [editUserName, setEditUserName] = React.useState(false);
   const [editEmail, setEdirEmail] = React.useState(false);
   const [editPhone, setEditPhone] = React.useState(false);
   const [editGender, setEditGender] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState('');
   const [professionId, setProfessionId] = React.useState('');
   const [selectCountries, setSelectCountries] = React.useState('');
-  const [fullName, setFullName] = React.useState('');
-  const [username, setUsername] = React.useState('');
-  const [emailUser, setEmailUser] = React.useState('');
-  const [userPhone, setUserPhone] = React.useState('');
   const [dataDate, setDataDate] = React.useState(new Date());
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -76,13 +71,10 @@ export default function EditProfile() {
     getUser();
   }, [getUser]);
 
-  // const handlePress = () => setExpanded(!expanded);
   const handleEditName = () => {
     setEditFullname(!editFullname);
   };
-  const handleEditUserNamae = () => {
-    setEditUserName(!editUserName);
-  };
+
   const handleEditEmail = () => {
     setEdirEmail(!editEmail);
   };
@@ -241,22 +233,6 @@ export default function EditProfile() {
     [],
   );
 
-  const onChangeFullname = text => {
-    setFullName(text);
-  };
-
-  const onChangeUsername = text => {
-    setUsername(text);
-  };
-
-  const onChangeEmail = text => {
-    setEmailUser(text);
-  };
-
-  const onChangePhone = text => {
-    setUserPhone(text);
-  };
-
   const handleButtonSave = async values => {
     try {
       const picture = {
@@ -299,7 +275,6 @@ export default function EditProfile() {
         setRefreshing(false);
       }, 2000);
       setEditFullname(false);
-      setEditUserName(false);
       setEdirEmail(false);
       setEditPhone(false);
     }
