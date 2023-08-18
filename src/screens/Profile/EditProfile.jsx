@@ -25,12 +25,23 @@ import moment from 'moment';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import {getUserData} from '../../redux/reducers/profile';
+import {useDispatch} from 'react-redux';
+
+const validationSchema = Yup.object({
+  fullName: Yup.string(),
+  email: Yup.string(),
+  phone: Yup.number(),
+});
 
 export default function EditProfile() {
+  const dispacth = useDispatch();
   const navigation = useNavigation();
   const token = useSelector(state => state.auth.token);
+  const user = useSelector(state => state.profile.data);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
-  const [user, setUser] = React.useState([]);
   const [editFullname, setEditFullname] = React.useState(false);
   const [editUserName, setEditUserName] = React.useState(false);
   const [editEmail, setEdirEmail] = React.useState(false);
@@ -56,8 +67,10 @@ export default function EditProfile() {
 
   const getUser = React.useCallback(async () => {
     const {data} = await http(token).get('/profile');
-    setUser(data.results);
-  }, [token]);
+    if (data.success) {
+      dispacth(getUserData(data.results));
+    }
+  }, [token, dispacth]);
 
   React.useEffect(() => {
     getUser();
@@ -181,6 +194,10 @@ export default function EditProfile() {
   const countries = React.useMemo(
     () => [
       {
+        id: 'Indonesia',
+        label: 'Indonesia',
+      },
+      {
         id: 'United States',
         label: 'United States',
       },
@@ -240,32 +257,31 @@ export default function EditProfile() {
     setUserPhone(text);
   };
 
-  const handleButtonSave = async () => {
+  const handleButtonSave = async values => {
     try {
       const picture = {
         uri: selectedImage,
         type: 'image/jpeg',
         name: 'image' + '-' + Date.now() + '.jpg',
       };
+      console.log(picture);
       const gender = selectedId === 'Male' ? true : false;
       const form = new FormData();
-      form.append('picture', picture);
-      form.append('fullName', fullName);
-      form.append('userName', username);
-      form.append('email', emailUser);
-      form.append('phoneNumber', userPhone);
+      form.append('picture', selectedImage ? picture : '');
+      form.append('fullName', values.fullName);
+      form.append('email', values.email);
+      form.append('phoneNumber', values.phone);
       form.append('gender', gender);
       form.append('profession', professionId);
       form.append('nationality', selectCountries);
       form.append('birthdate', moment(dataDate).format('YYYYMMDD'));
-
       const {data} = await http(token).post('/profile', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
       if (data.success) {
+        dispacth(getUserData(data.results));
         setMessage('Edit Profile Success');
         setSuccess(true);
       }
@@ -288,12 +304,6 @@ export default function EditProfile() {
       setEditPhone(false);
     }
   };
-
-  // const onRefresh = React.useCallback(() => {
-  //   setTimeout(() => {
-  //     setRefreshing(false);
-  //   }, 2000);
-  // }, []);
 
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} />}>
@@ -321,241 +331,267 @@ export default function EditProfile() {
           </TouchableRipple>
           <Text style={globalStyle.textHeader}>Edit Profile</Text>
         </View>
-        <View style={styles.main}>
-          <Portal>
-            <Modal
-              contentContainerStyle={{
-                backgroundColor: 'white',
-                width: '80%',
-              }}
-              style={{alignItems: 'center'}}
-              visible={visible}
-              onDismiss={hideModal}>
-              <TouchableRipple onPress={openGalerry}>
-                <View style={styles.imagePicker}>
-                  <Text style={styles.imagePickText}>Choose From Galery</Text>
-                  <FeatherIcon name="upload" size={20} color="#02A8A8" />
-                </View>
-              </TouchableRipple>
-              <TouchableRipple onPress={openCamera}>
-                <View style={styles.imagePicker}>
-                  <Text style={styles.imagePickText}>Choose From Camera</Text>
-                  <FeatherIcon name="camera" size={20} color="#02A8A8" />
-                </View>
-              </TouchableRipple>
-              <View style={styles.confirmParent}>
-                <TouchableRipple style={styles.confirm} onPress={hideModal}>
-                  <Text style={{color: 'white'}}>OK</Text>
-                </TouchableRipple>
-              </View>
-            </Modal>
-          </Portal>
-          <TouchableOpacity onPress={showModal}>
-            <View style={globalStyle.userImage}>
-              <View style={styles.ImageParent}>
-                <View style={{position: 'absolute', zIndex: 1}}>
-                  <FeatherIcon name="camera" size={30} color="#fff" />
-                </View>
-                <LinearGradient
-                  colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.55)']}
-                  style={globalStyle.bgGradient}
-                />
-                {/* {user?.pictuer && (
-                  <Image
-                    source={{
-                      uri: USER_DEFAULT_IMAGE,
-                    }}
-                    width={100}
-                    height={100}
-                  />
-                )} */}
-
-                <Image
-                  source={{
-                    uri: user.picture
-                      ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
-                      : USER_DEFAULT_IMAGE,
+        <Formik
+          initialValues={{
+            fullName: '',
+            email: '',
+            phone: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleButtonSave}>
+          {({
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View style={styles.main}>
+              <Portal>
+                <Modal
+                  contentContainerStyle={{
+                    backgroundColor: 'white',
+                    width: '80%',
                   }}
-                  width={100}
-                  height={100}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.profileDataContainer}>
-            <View style={styles.profileData}>
-              {editFullname && (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeFullname}
-                  placeholder="fullname"
-                  keyboardType="default"
-                />
-              )}
-              {!editFullname && (
-                <Text style={styles.titleStyle}>{user.fullName}</Text>
-              )}
-              <TouchableOpacity onPress={handleEditName}>
-                <Text>{editFullname ? 'Close' : 'Edit'}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.profileData}>
-              {editUserName && (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeUsername}
-                  placeholder="username"
-                  keyboardType="default"
-                />
-              )}
-              {!editUserName && (
-                <Text style={styles.titleStyle}>
-                  {user?.userName ? user.userName : 'add username'}
-                </Text>
-              )}
-              <TouchableOpacity onPress={handleEditUserNamae}>
-                <Text>{editUserName ? 'Close' : 'Edit'}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.profileData}>
-              {editEmail && (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeEmail}
-                  placeholder="email"
-                  keyboardType="email-address"
-                />
-              )}
-              {!editEmail && (
-                <Text style={styles.titleStyle}>
-                  {user?.email ? user.email : 'add email'}
-                </Text>
-              )}
-              <TouchableOpacity onPress={handleEditEmail}>
-                <Text>{editEmail ? 'Close' : 'Edit'}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.profileData}>
-              {editPhone && (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangePhone}
-                  placeholder="phone number"
-                  keyboardType="phone-pad"
-                />
-              )}
-              {!editPhone && (
-                <Text style={styles.titleStyle}>
-                  {user?.phoneNumber ? user.phoneNumber : 'add phone number'}
-                </Text>
-              )}
-              <TouchableOpacity onPress={handleEditPhone}>
-                <Text>{editPhone ? 'Close' : 'Edit'}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.profileData, styles.flexDirectionColumn]}>
-              <Text>Gender</Text>
-              <View style={styles.editGenderParent}>
-                {editGender && (
-                  <RadioGroup
-                    radioButtons={radioButtons}
-                    onPress={setSelectedId}
-                    selectedId={selectedId}
-                    containerStyle={styles.radioDirection}
-                  />
-                )}
-                {!editGender && (
-                  <Text style={styles.titleStyle}>
-                    {user?.gender ? user.gender : 'add gender'}
-                  </Text>
-                )}
-                <TouchableOpacity onPress={handleEditGender}>
-                  <Text>{editGender ? 'Close' : 'Edit'}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.accordion}>
-              <List.Section
-                title="Profession"
-                titleStyle={styles.titleStyle}
-                style={styles.listAccordionStyle}>
-                <List.Accordion
-                  title="Select Profession"
-                  style={styles.accordionBg}>
-                  <TouchableRipple
-                  // onPress={() => handleClickProfession(item.title)}
-                  >
-                    <RadioGroup
-                      radioButtons={profession}
-                      onPress={setProfessionId}
-                      selectedId={professionId}
-                      containerStyle={styles.radioProfession}
-                    />
+                  style={{alignItems: 'center'}}
+                  visible={visible}
+                  onDismiss={hideModal}>
+                  <TouchableRipple onPress={openGalerry}>
+                    <View style={styles.imagePicker}>
+                      <Text style={styles.imagePickText}>
+                        Choose From Galery
+                      </Text>
+                      <FeatherIcon name="upload" size={20} color="#02A8A8" />
+                    </View>
                   </TouchableRipple>
-                </List.Accordion>
-              </List.Section>
-            </View>
-            <View style={styles.accordion}>
-              <List.Section
-                title="Nationality"
-                style={styles.listAccordionStyle}
-                titleStyle={styles.titleStyle}>
-                <List.Accordion
-                  title="Select Nationality"
-                  style={styles.accordionBg}>
-                  <TouchableRipple>
-                    <RadioGroup
-                      radioButtons={countries}
-                      onPress={setSelectCountries}
-                      selectedId={selectCountries}
-                      containerStyle={styles.radioProfession}
-                      radioButtonStyle={styles.radioValue}
-                    />
+                  <TouchableRipple onPress={openCamera}>
+                    <View style={styles.imagePicker}>
+                      <Text style={styles.imagePickText}>
+                        Choose From Camera
+                      </Text>
+                      <FeatherIcon name="camera" size={20} color="#02A8A8" />
+                    </View>
                   </TouchableRipple>
-                </List.Accordion>
-              </List.Section>
-            </View>
-            <View style={[styles.profileData, styles.flexDirectionColumn]}>
-              <Text>Birthdate</Text>
-              <View style={styles.birthdateParent}>
-                {open && (
-                  <>
-                    <DatePicker
-                      modal
-                      mode="date"
-                      open={open}
-                      date={dataDate}
-                      onConfirm={date => {
-                        setDataDate(date);
-                      }}
-                      onCancel={() => {
-                        setOpen(false);
-                      }}
+                  <View style={styles.confirmParent}>
+                    <TouchableRipple style={styles.confirm} onPress={hideModal}>
+                      <Text style={{color: 'white'}}>OK</Text>
+                    </TouchableRipple>
+                  </View>
+                </Modal>
+              </Portal>
+              <TouchableOpacity onPress={showModal}>
+                <View style={globalStyle.userImage}>
+                  <View style={styles.ImageParent}>
+                    <View style={{position: 'absolute', zIndex: 1}}>
+                      <FeatherIcon name="camera" size={30} color="#fff" />
+                    </View>
+                    <LinearGradient
+                      colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.55)']}
+                      style={globalStyle.bgGradient}
                     />
-                    <Text>{moment(dataDate).format('YYYY-MMM-DD')}</Text>
-                  </>
-                )}
-                {!open && (
-                  <Text style={styles.titleStyle}>
-                    {user?.birthdate
-                      ? moment(user.birthdate).format('YYYY-MM-DD')
-                      : 'Add birthdate'}
-                  </Text>
-                )}
-                <TouchableOpacity onPress={() => setOpen(!open)}>
-                  <Text>{open ? 'Close' : 'Edit'}</Text>
-                </TouchableOpacity>
+                    <Image
+                      source={{
+                        uri: user.picture
+                          ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
+                          : USER_DEFAULT_IMAGE,
+                      }}
+                      width={100}
+                      height={100}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.profileDataContainer}>
+                <View style={styles.profileData}>
+                  {editFullname && (
+                    <TextInput
+                      style={styles.input}
+                      placeholder="fullname"
+                      keyboardType="default"
+                      value={values.fullName}
+                      onChangeText={handleChange('fullName')}
+                      onBlur={handleBlur('fullName')}
+                    />
+                  )}
+                  {!editFullname && (
+                    <Text style={styles.titleStyle}>{user?.fullName}</Text>
+                  )}
+                  <TouchableOpacity onPress={handleEditName}>
+                    <Text>{editFullname ? 'Close' : 'Edit'}</Text>
+                  </TouchableOpacity>
+                </View>
+                {/* <View style={styles.profileData}>
+                  {editUserName && (
+                    <TextInput
+                      style={styles.input}
+                      placeholder="username"
+                      keyboardType="default"
+                      value={values.userName}
+                      onChangeText={handleChange('userName')}
+                      onBlur={handleBlur('userName')}
+                    />
+                  )}
+                  {!editUserName && (
+                    <Text style={styles.titleStyle}>
+                      {user?.userName ? user.userName : 'add username'}
+                    </Text>
+                  )}
+                  <TouchableOpacity onPress={handleEditUserNamae}>
+                    <Text>{editUserName ? 'Close' : 'Edit'}</Text>
+                  </TouchableOpacity>
+                </View> */}
+                <View style={styles.profileData}>
+                  {editEmail && (
+                    <TextInput
+                      style={styles.input}
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      placeholder="email"
+                      keyboardType="email-address"
+                    />
+                  )}
+                  {!editEmail && (
+                    <Text style={styles.titleStyle}>
+                      {user?.email ? user.email : 'add email'}
+                    </Text>
+                  )}
+                  <TouchableOpacity onPress={handleEditEmail}>
+                    <Text>{editEmail ? 'Close' : 'Edit'}</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.profileData}>
+                  {editPhone && (
+                    <TextInput
+                      style={styles.input}
+                      value={values.phone}
+                      onChangeText={handleChange('phone')}
+                      onBlur={handleBlur('phone')}
+                      placeholder="phone number"
+                      keyboardType="phone-pad"
+                    />
+                  )}
+                  {!editPhone && (
+                    <Text style={styles.titleStyle}>
+                      {user?.phoneNumber
+                        ? user.phoneNumber
+                        : 'add phone number'}
+                    </Text>
+                  )}
+                  <TouchableOpacity onPress={handleEditPhone}>
+                    <Text>{editPhone ? 'Close' : 'Edit'}</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={[styles.profileData, styles.flexDirectionColumn]}>
+                  <Text>Gender</Text>
+                  <View style={styles.editGenderParent}>
+                    {editGender && (
+                      <RadioGroup
+                        radioButtons={radioButtons}
+                        onPress={setSelectedId}
+                        selectedId={selectedId}
+                        containerStyle={styles.radioDirection}
+                      />
+                    )}
+                    {!editGender && (
+                      <Text style={styles.titleStyle}>
+                        {user?.gender
+                          ? user.gender
+                            ? 'Male'
+                            : 'Female'
+                          : 'add gender'}
+                      </Text>
+                    )}
+                    <TouchableOpacity onPress={handleEditGender}>
+                      <Text>{editGender ? 'Close' : 'Edit'}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.accordion}>
+                  <List.Section
+                    title="Profession"
+                    titleStyle={styles.titleStyle}
+                    style={styles.listAccordionStyle}>
+                    <List.Accordion
+                      title="Select Profession"
+                      style={styles.accordionBg}>
+                      <TouchableRipple
+                      // onPress={() => handleClickProfession(item.title)}
+                      >
+                        <RadioGroup
+                          radioButtons={profession}
+                          onPress={setProfessionId}
+                          selectedId={professionId}
+                          containerStyle={styles.radioProfession}
+                        />
+                      </TouchableRipple>
+                    </List.Accordion>
+                  </List.Section>
+                </View>
+                <View style={styles.accordion}>
+                  <List.Section
+                    title="Nationality"
+                    style={styles.listAccordionStyle}
+                    titleStyle={styles.titleStyle}>
+                    <List.Accordion
+                      title="Select Nationality"
+                      style={styles.accordionBg}>
+                      <TouchableRipple>
+                        <RadioGroup
+                          radioButtons={countries}
+                          onPress={setSelectCountries}
+                          selectedId={selectCountries}
+                          containerStyle={styles.radioProfession}
+                          radioButtonStyle={styles.radioValue}
+                        />
+                      </TouchableRipple>
+                    </List.Accordion>
+                  </List.Section>
+                </View>
+                <View style={[styles.profileData, styles.flexDirectionColumn]}>
+                  <Text>Birthdate</Text>
+                  <View style={styles.birthdateParent}>
+                    {open && (
+                      <>
+                        <DatePicker
+                          modal
+                          mode="date"
+                          open={open}
+                          date={dataDate}
+                          onConfirm={date => {
+                            setDataDate(date);
+                          }}
+                          onCancel={() => {
+                            setOpen(false);
+                          }}
+                        />
+                        <Text>{moment(dataDate).format('YYYY-MMM-DD')}</Text>
+                      </>
+                    )}
+                    {!open && (
+                      <Text style={styles.titleStyle}>
+                        {user?.birthdate
+                          ? moment(user?.birthdate).format('YYYY-MM-DD')
+                          : 'Add birthdate'}
+                      </Text>
+                    )}
+                    <TouchableOpacity onPress={() => setOpen(!open)}>
+                      <Text>{open ? 'Close' : 'Edit'}</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
+              <Button
+                mode="contained"
+                theme={{colors: {primary: '#018383'}}}
+                onPress={handleSubmit}
+                style={styles.sendDataButton}>
+                Save
+              </Button>
             </View>
-          </View>
-        </View>
-        <Button
-          mode="contained"
-          theme={{colors: {primary: '#018383'}}}
-          onPress={handleButtonSave}
-          style={styles.sendDataButton}>
-          Save
-        </Button>
+          )}
+        </Formik>
       </View>
     </ScrollView>
   );
@@ -636,6 +672,7 @@ const styles = StyleSheet.create({
   },
   sendDataButton: {
     height: 50,
+    width: '100%',
     justifyContent: 'center',
     // alignItems: 'center',
     margin: 20,
