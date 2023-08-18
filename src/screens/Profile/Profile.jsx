@@ -10,18 +10,21 @@ import {useSelector} from 'react-redux';
 import http from '../../helper/http';
 import {TouchableRipple} from 'react-native-paper';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {getUserData} from '../../redux/reducers/profile';
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
+  const user = useSelector(state => state.profile.data);
   const navigation = useNavigation();
   const route = useRoute();
-  const [user, setUser] = React.useState([]);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
 
   const getUser = React.useCallback(async () => {
     const {data} = await http(token).get('/profile');
-    setUser(data.results);
-  }, [token]);
+    dispatch(getUserData(data.results));
+  }, [token, dispatch]);
 
   React.useEffect(() => {
     getUser();
@@ -40,24 +43,15 @@ const Profile = () => {
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', gap: 20}}>
           <View style={globalStyle.userImage}>
-            {user?.pictuer && (
-              <Image
-                source={{
-                  uri: `http://localhost:8888/uploads/${user.picture}`,
-                }}
-                width={100}
-                height={100}
-              />
-            )}
-            {!user?.picture && (
-              <Image
-                source={{
-                  uri: USER_DEFAULT_IMAGE,
-                }}
-                width={100}
-                height={100}
-              />
-            )}
+            <Image
+              source={{
+                uri: user.picture
+                  ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
+                  : USER_DEFAULT_IMAGE,
+              }}
+              width={100}
+              height={100}
+            />
           </View>
           <Text style={{fontSize: 18}}>{user.fullName}</Text>
           <Text>{user.email}</Text>
