@@ -241,18 +241,6 @@ export default function Update() {
                     ))}
                   </List.Accordion>
                 </List.Section>
-                {/* <TextInput
-                  label={eventUpdate.price}
-                  style={styles.inputStyle}
-                  value={values.price}
-                  activeUnderlineColor="#02A8A8"
-                  underlineColor="#02A8A8"
-                  onChangeText={handleChange('price')}
-                  onBlur={handleBlur('price')}
-                />
-                {errors.price && touched.price && (
-                  <Text style={styles.errorText}>{errors.price}</Text>
-                )} */}
                 <List.Section style={styles.containerAccordion}>
                   <List.Accordion
                     title={
@@ -358,6 +346,8 @@ const styles = StyleSheet.create({
   setDate: {
     justifyContent: 'center',
     paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: '#02A8A8',
   },
   textBlack: {color: 'black'},
   date: {
