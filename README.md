@@ -1,79 +1,55 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Eventify
 
-# Getting Started
+Eventify is a platform for event management that makes it easy for users to discover, create, and connect with events of their interest.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Key Features
 
-## Step 1: Start the Metro Server
+- **Comprehensive Event Discovery**: Users can easily find a diverse range of events from various categories, ensuring they discover events aligned with their interests.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- **Effortless Event Creation**: Event organizers can create and promote events seamlessly through a user-friendly interface, streamlining the event management process.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- **Interactive Community**: Eventify fosters interaction among participants through comments and discussions, enhancing networking opportunities and engagement.
 
-```bash
-# using npm
-npm start
+- **Personalized Notifications**: Users receive tailored event recommendations and notifications, keeping them updated on relevant upcoming events.
 
-# OR using Yarn
-yarn start
-```
+- **Secure and Private**: Eventify prioritizes user security and privacy, ensuring a safe environment for event organization and attendance.
 
-## Step 2: Start your Application
+## Eventify Mobile
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+**Eventify Mobile: Your Ultimate Event Companion**
 
-### For Android
+- **Explore Diverse Events**: Easily find events matching your interests across various categories.
 
-```bash
-# using npm
-npm run android
+- **Effortless Event Creation**: Event organizers can create and promote events with a user-friendly mobile interface.
 
-# OR using Yarn
-yarn android
-```
+- **Interactive Community**: Engage with fellow participants through comments and discussions for enhanced networking.
 
-### For iOS
+- **Personalized Alerts**: Receive tailored event recommendations and notifications to stay up-to-date.
 
-```bash
-# using npm
-npm run ios
+- **Safety First**: Eventify ensures your security and privacy, creating a safe environment for all.
 
-# OR using Yarn
-yarn ios
-```
+Get ready to simplify event management, connect with like-minded individuals, and stay informed, all at your fingertips with Eventify Mobile!
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+# Benefits
+- Easy Event Discovery and Attendance: Eventify facilitates users in finding and participating in various interesting events with ease.
+- Enhanced Event Organization Efficiency: Eventify improves event organizers' efficiency in planning and managing events.
+- Foster Interactions and Networking: The app builds interactions and networks among event participants.
+- Personalized Event Recommendations: Eventify provides users with event recommendations that match their interests.
+- Increased Event Visibility through Sharing and Promotion: Eventify boosts event visibility through sharing and promotional features.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+# Built With
+Here are the technologies used in building this project:
 
-## Step 3: Modifying your App
+1. [React](https://reactjs.org/)
+2. [Tailwind CSS](https://tailwindcss.com/)
+3. [DaisyUI](https://daisyui.com/)
+4. [Redux](https://redux.js.org/)
+5. [Axios](https://axios-http.com/docs/intro)
+6. [Formik](https://formik.org/)
+7. [React Native Push Notification](https://example-link.com/react-native-push-notification)
+8. [React Native Paper](https://example-link.com/react-native-paper)
+9. [JWT Decode](https://example-link.com/jwt-decode)
+10. [Moment.js](https://example-link.com/moment-js)
+11. and more
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+These technologies have been used to create this project, ensuring its functionality and user experience.
