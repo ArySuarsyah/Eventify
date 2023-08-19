@@ -53,3 +53,18 @@ Here are the technologies used in building this project:
 11. and more
 
 These technologies have been used to create this project, ensuring its functionality and user experience.
+
+# Image Example
+
+- Register
+![Register](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Register.jpg)
+
+- Home
+![Home](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Home.jpg)
+
+- Event
+![Event](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Event.jpg)
+
+- Booking
+![Booking](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Booking.jpg)
+
