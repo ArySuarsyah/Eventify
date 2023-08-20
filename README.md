@@ -55,16 +55,36 @@ Here are the technologies used in building this project:
 These technologies have been used to create this project, ensuring its functionality and user experience.
 
 # Image Example
+<table>
+  <tr>
+    <td align="center">Register</td>
+    <td align="center">Home</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Register.jpg" alt="Register" width="300" height="600">
+    </td>
+    <td>
+      <img src="https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Home.jpg" alt="Home" width="300" height="600">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">Event</td>
+    <td align="center">Booking</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Event.jpg" alt="Event" width="300" height="600">
+    </td>
+    <td>
+      <img src="https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Booking.jpg" alt="Booking" width="300" height="600">
+    </td>
+  </tr>
+</table>
 
-- Register
-![Register](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Register.jpg)
 
-- Home
-![Home](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Home.jpg)
 
-- Event
-![Event](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Event.jpg)
 
-- Booking
-![Booking](https://github.com/ArySuarsyah/Eventify-redevelop/blob/main/src/assets/Image/app_image/Booking.jpg)
+
+
 
