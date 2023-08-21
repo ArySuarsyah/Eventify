@@ -45,7 +45,7 @@ export default function Login() {
   const handleShowPass = () => {
     setShowPassword(!showPassword);
   };
-  console.log(route.name);
+
   const doLogin = values => {
     dispatch(loginAction(values));
   };

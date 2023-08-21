@@ -7,7 +7,7 @@ import Profile from './Profile/Profile';
 import Register from './Auth/Register';
 import Login from './Auth/Login';
 import EventDetail from './eventDetail/Index';
-import ForgotPassword from './Auth/ForgotPassword';
+import ForgotPassword from './Forgot/ForgotPassword';
 import Booking from './Booking/Index';
 import Wishlist from './Wishlist/Index';
 import Settings from './Settings/Index';
@@ -19,6 +19,8 @@ import ManageEvent from './Manage/Index';
 import ConfirmPayment from './ConfirmPayment/Index';
 import CreateEvent from './Manage/Create';
 import UpdateEvent from './Manage/Update';
+import InputPin from './Forgot/InputPin';
+import ResetPassword from './Forgot/ResetPassword';
 
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
@@ -38,6 +40,8 @@ export default function Main() {
       )}
       {token && (
         <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen name="InputPin" component={InputPin} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Profile" component={Profile} />

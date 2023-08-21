@@ -4,6 +4,7 @@ import {asyncLogin, asyncRegister} from '../actions/auth';
 const initialState = {
   token: '',
   errorMessage: '',
+  pin: '',
 };
 
 const auth = createSlice({
@@ -18,6 +19,9 @@ const auth = createSlice({
     },
     deleteMessage: state => {
       state.errorMessage = '';
+    },
+    sendPin: (state, action) => {
+      state.pin = action.payload;
     },
   },
   extraReducers: builder => {
@@ -45,5 +49,5 @@ const auth = createSlice({
   },
 });
 
-export const {login, logout, deleteMessage} = auth.actions;
+export const {login, logout, deleteMessage, sendPin} = auth.actions;
 export default auth.reducer;

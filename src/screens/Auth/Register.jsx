@@ -70,7 +70,9 @@ export default function Login() {
 
   useEffect(() => {
     if (route.name === 'Register') {
-      console.log('ok');
+      if (message) {
+        showModal();
+      }
     }
   }, [message, route.name]);
 
