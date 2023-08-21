@@ -40,8 +40,6 @@ export default function Main() {
       )}
       {token && (
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
-          <Stack.Screen name="InputPin" component={InputPin} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Profile" component={Profile} />
@@ -55,6 +53,8 @@ export default function Main() {
           <Stack.Screen name="Wishlist" component={Wishlist} />
           <Stack.Screen name="ManageEvent" component={ManageEvent} />
           <Stack.Screen name="Create" component={CreateEvent} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen name="InputPin" component={InputPin} />
           <Stack.Screen name="Update" component={UpdateEvent} />
         </Stack.Navigator>
       )}
