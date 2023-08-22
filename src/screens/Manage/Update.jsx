@@ -24,9 +24,9 @@ import http from '../../helper/http';
 import {useSelector} from 'react-redux';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Event name cannot be empty'),
-  price: Yup.string().required('Event Price cannot be empty'),
-  detail: Yup.string().required('Event Detail cannot be empty'),
+  name: Yup.string(),
+  price: Yup.string(),
+  detail: Yup.string(),
 });
 
 export default function Update() {
@@ -132,6 +132,11 @@ export default function Update() {
 
   const doCreate = async values => {
     try {
+      const image = {
+        uri: imagePick,
+        type: 'image/jpeg',
+        name: 'image' + '-' + Date.now() + '.jpg',
+      };
       const form = new FormData();
       form.append('picture', imagePick);
       form.append('title', values.name);
@@ -151,7 +156,7 @@ export default function Update() {
       );
 
       if (data.success) {
-        setMessage('Create Event Success');
+        setMessage('Update Event Success');
         setVisible(true);
       }
     } catch (error) {
@@ -162,7 +167,7 @@ export default function Update() {
 
   const handleConfirm = () => {
     setVisible(false);
-    // navigation.navigate('ManageEvent');
+    navigation.navigate('ManageEvent');
   };
 
   return (
@@ -174,7 +179,7 @@ export default function Update() {
             contentContainerStyle={styles.containerModalStyle}
             style={styles.modalStyle}>
             <View style={styles.messageContainer}>
-              {message === 'Create Event Success' ? (
+              {message === 'Update Event Success' ? (
                 <MaterialIcons name="check" size={50} color="#018383" />
               ) : (
                 <MaterialIcons name="close" size={50} color="#ff6b6b" />

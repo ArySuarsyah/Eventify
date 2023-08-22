@@ -25,15 +25,24 @@ export default function ManageEvent() {
   const token = useSelector(state => state.auth.token);
   const [message, setMessage] = React.useState('');
   const [visible, setVisible] = React.useState(false);
+  const [pageData, setPageData] = React.useState(1);
 
-  const getData = useCallback(async () => {
-    const {data} = await http(token).get('/events');
+  const getData = useCallback(
+    async (page = 1, limit = 5) => {
+      const {data} = await http(token).get('/events', {
+        params: {
+          page,
+          limit,
+        },
+      });
 
-    setEventData(data.results);
-  }, [token]);
+      setEventData(data.results);
+    },
+    [token],
+  );
 
   useEffect(() => {
-    getData();
+    getData(1, 5);
   }, [getData]);
 
   const goToCreate = () => {
@@ -60,8 +69,22 @@ export default function ManageEvent() {
 
   const handleConfirm = () => {
     setVisible(false);
+    navigation.navigate('ManageEvent');
   };
 
+  const prevPage = () => {
+    if (pageData > 1) {
+      setPageData(pageData - 1);
+      getData(pageData, 5);
+    }
+  };
+
+  const nextPage = () => {
+    setPageData(pageData + 1);
+    getData(pageData, 5);
+  };
+
+  console.log(pageData);
   return (
     <ScrollView>
       <View>
@@ -128,6 +151,25 @@ export default function ManageEvent() {
               </View>
             );
           })}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 30,
+            }}>
+            <TouchableRipple style={styles.buttonPagination} onPress={prevPage}>
+              <View>
+                <AntDesign name="left" size={20} color="black" />
+              </View>
+            </TouchableRipple>
+            <Text style={{width: 20, textAlign: 'center'}}>{pageData}</Text>
+            <TouchableRipple style={styles.buttonPagination} onPress={nextPage}>
+              <View>
+                <AntDesign name="right" size={20} color="black" />
+              </View>
+            </TouchableRipple>
+          </View>
           {/* <NoTicket /> */}
         </View>
       </View>
@@ -153,5 +195,14 @@ const styles = StyleSheet.create({
   modalStyle: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonPagination: {
+    borderWidth: 1,
+    borderColor: 'black',
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

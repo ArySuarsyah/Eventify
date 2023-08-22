@@ -36,12 +36,14 @@ import moment from 'moment';
 import Foundation from 'react-native-vector-icons/dist/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
 import {getId} from '../redux/reducers/event';
+import {getUserData} from '../redux/reducers/profile';
 
 export default function Home() {
   const token = useSelector(state => state.auth.token);
+  const user = useSelector(state => state.profile.data);
+
   const dispatch = useDispatch();
   const [searchEvent, setSearchEvent] = React.useState('');
-  const [user, setUser] = React.useState([]);
   const [eventList, setEventList] = React.useState([]);
   const drawer = React.useRef(null);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
@@ -70,8 +72,8 @@ export default function Home() {
 
   const getUser = React.useCallback(async () => {
     const {data} = await http(token).get('/profile');
-    setUser(data.results);
-  }, [token]);
+    dispatch(getUserData(data.results));
+  }, [token, dispatch]);
 
   const getEvent = React.useCallback(
     async (page = 1, searchByName = '', sort = '') => {
