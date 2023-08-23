@@ -7,8 +7,7 @@ const http = token => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: 'https://ruby-buffalo-fez.cyclic.app',
-    // baseURL: 'http://localhost:8888',
+    baseURL: 'https://lazy-ruby-sweater.cyclic.cloud',
 
     headers,
   });
