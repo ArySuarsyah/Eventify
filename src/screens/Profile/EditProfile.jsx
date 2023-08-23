@@ -240,7 +240,7 @@ export default function EditProfile() {
         type: 'image/jpeg',
         name: 'image' + '-' + Date.now() + '.jpg',
       };
-      console.log(picture);
+
       const gender = selectedId === 'Male' ? true : false;
       const form = new FormData();
       form.append('picture', selectedImage ? picture : '');

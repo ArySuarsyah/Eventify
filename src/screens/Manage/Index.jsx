@@ -84,7 +84,6 @@ export default function ManageEvent() {
     getData(pageData, 5);
   };
 
-  console.log(pageData);
   return (
     <ScrollView>
       <View>
