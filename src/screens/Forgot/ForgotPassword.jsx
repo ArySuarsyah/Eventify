@@ -16,13 +16,17 @@ const validationSchema = Yup.object({
 export default function ForgotPassword() {
   const navigation = useNavigation();
   const doForgot = async values => {
-    const form = new URLSearchParams({
-      email: values.email,
-    }).toString();
-    const {data} = await http().post('/auth/forgot-password', form);
-    if (data.success) {
-      console.log(data.results);
-      navigation.navigate('InputPin');
+    try {
+      const form = new URLSearchParams({
+        email: values.email,
+      }).toString();
+      const {data} = await http().post('/auth/forgot-password', form);
+      if (data.success) {
+        console.log(data.results);
+        navigation.navigate('InputPin');
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
     }
   };
 
@@ -54,8 +58,8 @@ export default function ForgotPassword() {
             <View style={styles.formContainer}>
               <View style={styles.inputParent}>
                 <TextInput
-                  handleChange={handleChange('email')}
-                  handleBlur={handleBlur}
+                  onChangeText={handleChange('email')}
+                  handleBlur={handleBlur('email')}
                   values={values.email}
                   style={styles.input}
                   placeholder="Email"

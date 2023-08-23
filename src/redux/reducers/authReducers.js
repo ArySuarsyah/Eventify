@@ -3,7 +3,8 @@ import {asyncLogin, asyncRegister} from '../actions/auth';
 
 const initialState = {
   token: '',
-  errorMessage: '',
+  loginMessage: '',
+  registerMessage: '',
   pin: '',
 };
 
@@ -18,7 +19,8 @@ const auth = createSlice({
       return initialState;
     },
     deleteMessage: state => {
-      state.errorMessage = '';
+      state.loginMessage = '';
+      state.registerMessage = '';
     },
     sendPin: (state, action) => {
       state.pin = action.payload;
@@ -26,25 +28,22 @@ const auth = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(asyncLogin.pending, (state, action) => {
-      console.log(action.payload);
-      state.errorMessage = action.payload;
+      state.loginMessage = action.payload;
     });
     builder.addCase(asyncLogin.fulfilled, (state, action) => {
       state.token = action.payload;
     });
     builder.addCase(asyncLogin.rejected, (state, action) => {
-      console.log(action.payload);
-
-      state.errorMessage = action.payload;
+      state.loginMessage = action.payload;
     });
     builder.addCase(asyncRegister.pending, (state, action) => {
-      state.errorMessage = action.payload;
+      state.registerMessage = action.payload;
     });
     builder.addCase(asyncRegister.fulfilled, (state, action) => {
       state.token = action.payload;
     });
     builder.addCase(asyncRegister.rejected, (state, action) => {
-      state.errorMessage = action.payload;
+      state.registerMessage = action.payload;
     });
   },
 });

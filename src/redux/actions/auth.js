@@ -15,12 +15,12 @@ export const asyncLogin = createAsyncThunk(
 
       return data.results.token;
     } catch (error) {
-      const message = error?.response?.message;
-      if (message) {
-        return rejectWithValue(message);
-      } else {
-        return rejectWithValue(error.message);
+      if (error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error?.response?.data?.results[0]?.msg) {
+        return rejectWithValue(error?.response?.data?.results[0]?.msg);
       }
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -37,15 +37,14 @@ export const asyncRegister = createAsyncThunk(
       }).toString();
 
       const {data} = await http().post('/auth/register', form);
-      console.log(data);
       return data.results.token;
     } catch (error) {
-      const message = error?.response?.message;
-      if (message) {
-        return rejectWithValue(message);
-      } else {
-        return rejectWithValue(error.message);
+      if (error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else if (error?.response?.data?.results[0]?.msg) {
+        return rejectWithValue(error?.response?.data?.results[0]?.msg);
       }
+      return rejectWithValue(error.message);
     }
   },
 );

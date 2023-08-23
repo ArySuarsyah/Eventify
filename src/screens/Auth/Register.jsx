@@ -18,14 +18,11 @@ import {Link} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {asyncRegister as registerAction} from '../../redux/actions/auth';
 import {deleteMessage} from '../../redux/reducers/authReducers';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import Feather from 'react-native-vector-icons/dist/Feather';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 
 const validationSchema = Yup.object({
@@ -36,12 +33,10 @@ const validationSchema = Yup.object({
 
 export default function Login() {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const route = useRoute();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowCoonfirmPassword] = useState(false);
   const [checked, setChecked] = useState(false);
-  const message = useSelector(state => state.auth.errorMessage);
+  const message = useSelector(state => state.auth.registerMessage);
   const [visible, setVisible] = React.useState(false);
 
   const showModal = () => setVisible(true);
@@ -69,12 +64,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (route.name === 'Register') {
-      if (message) {
-        showModal();
-      }
+    if (message) {
+      showModal();
     }
-  }, [message, route.name]);
+  }, [message]);
 
   const handleOkey = () => {
     // clearData();
@@ -99,14 +92,7 @@ export default function Login() {
                       <AntDesign name="close" color="white" size={30} />
                     </View>
                   )}
-                  <Text style={styles.textCenter}>
-                    {message === 'Request failed with status code 400' &&
-                      'Password and Confirm Password do not match'}
-                    {message === 'Request failed with status code 409' &&
-                      'Email already used!'}
-                    {message === 'Network Error' &&
-                      'Check your internet connection'}
-                  </Text>
+                  <Text style={styles.textCenter}>{message}</Text>
                   <TouchableRipple
                     style={styles.buttonHeight}
                     onPress={handleOkey}>

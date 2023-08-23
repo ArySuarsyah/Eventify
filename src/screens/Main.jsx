@@ -36,16 +36,18 @@ export default function Main() {
           <AuthStack.Screen name="Register" component={Register} />
           <AuthStack.Screen name="Login" component={Login} />
           <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <AuthStack.Screen name="ResetPassword" component={ResetPassword} />
+          <AuthStack.Screen name="InputPin" component={InputPin} />
         </AuthStack.Navigator>
       )}
       {token && (
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Booking" component={Booking} />
           <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="EventDetail" component={EventDetail} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
           <Stack.Screen name="ConfirmPayment" component={ConfirmPayment} />
@@ -53,8 +55,6 @@ export default function Main() {
           <Stack.Screen name="Wishlist" component={Wishlist} />
           <Stack.Screen name="ManageEvent" component={ManageEvent} />
           <Stack.Screen name="Create" component={CreateEvent} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
-          <Stack.Screen name="InputPin" component={InputPin} />
           <Stack.Screen name="Update" component={UpdateEvent} />
         </Stack.Navigator>
       )}

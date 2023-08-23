@@ -19,7 +19,6 @@ import {asyncLogin as loginAction} from '../../redux/actions/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {useNavigation, useRoute} from '@react-navigation/native';
 import {Portal, Modal, Button, TouchableRipple} from 'react-native-paper';
 import {deleteMessage} from '../../redux/reducers/authReducers';
 
@@ -29,15 +28,10 @@ const validationSchema = Yup.object({
 });
 
 export default function Login() {
-  const navigate = useNavigation();
-  const route = useRoute();
   const dispatch = useDispatch();
-  const token = useSelector(state => state.auth.token);
-  const errorMessage = useSelector(state => state.auth.errorMessage);
+  const errorMessage = useSelector(state => state.auth.loginMessage);
   const [showPassword, setShowPassword] = useState(false);
   const [visible, setVisible] = React.useState(false);
-
-  console.log(`error: ${errorMessage}`);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -51,12 +45,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (route.name === 'Login') {
-      if (errorMessage) {
-        showModal();
-      }
+    if (errorMessage) {
+      showModal();
     }
-  }, [errorMessage, route.name]);
+  }, [errorMessage]);
 
   const handleOkey = () => {
     // clearData();
@@ -80,17 +72,12 @@ export default function Login() {
               onDismiss={hideModal}
               contentContainerStyle={styles.containerStyle}
               style={styles.modalStyle}>
-              {errorMessage === 'Request failed with status code 400' && (
+              {errorMessage && (
                 <View style={styles.iconFailed}>
                   <AntDesign name="close" color="white" size={30} />
                 </View>
               )}
-              <Text style={styles.textCenter}>
-                {errorMessage === 'Request failed with status code 400' &&
-                  'Wrong email or password'}
-                {errorMessage === 'Network Error' &&
-                  'Check your internet connection'}
-              </Text>
+              <Text style={styles.textCenter}>{errorMessage}</Text>
               <TouchableRipple style={styles.buttonHeight} onPress={handleOkey}>
                 <Button style={styles.button}>
                   <Text style={styles.colorWhite}>Ok</Text>
