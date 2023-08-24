@@ -5,8 +5,6 @@ import styles from '../../assets/globalStyles';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PinInput from '../../components/PinInput';
-import http from '../../helper/http';
-import {useNavigation} from '@react-navigation/native';
 
 export default function InputPin() {
   return (
