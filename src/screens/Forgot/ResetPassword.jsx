@@ -54,11 +54,6 @@ export default function ResetPassword() {
       <View style={globalStyles.container}>
         <View style={globalStyles.registerHeader}>
           <Text style={globalStyles.authTitle}>Reset Your Password</Text>
-          {/* <View style={globalStyles.subTitleContainer}>
-            <Text style={globalStyles.subtitle}>
-              You'll get mail soon on your email
-            </Text>
-          </View> */}
         </View>
         <Formik
           initialValues={{

@@ -11,7 +11,6 @@ import imageSecTwo from '../../assets/Image/icon-tickets2.png';
 import imageSecThree from '../../assets/Image/icon-tickets3.png';
 import sectionBlack from '../../assets/Image/Black.png';
 import {useEffect} from 'react';
-import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {getData} from '../../redux/reducers/paymentReducers';

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import {View, Image, ScrollView, StyleSheet, Dimensions} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import {TouchableRipple, Modal, Portal, Text, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
