@@ -15,7 +15,6 @@ import globalStyle from '../../assets/globalStyles';
 import React from 'react';
 import userImage from '../../assets/Image/userDefault.png';
 import LinearGradient from 'react-native-linear-gradient';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import RadioGroup from 'react-native-radio-buttons-group';
 import {useSelector} from 'react-redux';
@@ -24,7 +23,6 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {getUserData} from '../../redux/reducers/profile';
@@ -38,7 +36,6 @@ const validationSchema = Yup.object({
 
 export default function EditProfile() {
   const dispacth = useDispatch();
-  const navigation = useNavigation();
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.profile.data);
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;

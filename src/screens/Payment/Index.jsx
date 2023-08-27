@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unstable-nested-components */
 import {
   View,
@@ -9,8 +10,6 @@ import {
 } from 'react-native';
 import {TouchableRipple} from 'react-native-paper';
 import React from 'react';
-import globalStyle from '../../assets/globalStyles';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/dist/FontAwesome6';
@@ -21,7 +20,6 @@ import {useSelector} from 'react-redux';
 import {selectPayment} from '../../redux/reducers/paymentReducers';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import retail from '../../assets/Image/market.png';
 import card from '../../assets/Image/card.png';
 import bri from '../../assets/Image/bri.png';
 import bni from '../../assets/Image/bni.png';
@@ -37,7 +35,6 @@ export default function Payment() {
   const [selectedCard, setSelectedCard] = React.useState('card1');
   const [paymentMethod, setPaymentMethod] = React.useState('');
 
-  const handlePress = () => setExpanded(!expanded);
   const handlePressRetail = () => {
     setPaymentMethod('Retail');
     setOpen(!open);
@@ -48,7 +45,6 @@ export default function Payment() {
   };
   const handlePressOnCard = () => setExpandedCard(!expandedCard);
 
-  const market = Image.resolveAssetSource(retail).uri;
   const briLogo = Image.resolveAssetSource(bri).uri;
   const bniLogo = Image.resolveAssetSource(bni).uri;
 

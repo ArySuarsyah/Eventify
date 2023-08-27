@@ -1,18 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {TouchableRipple} from 'react-native-paper';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
 import NoTicket from '../../components/NoTicket';
 
 export default function MyBooking() {
-  const navigation = useNavigation();
   const [dataHistory, setDataHistory] = useState([]);
   const token = useSelector(state => state.auth.token);
   const getData = useCallback(async () => {

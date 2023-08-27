@@ -17,7 +17,6 @@ import Profile from './Profile/Profile';
 import Register from './Auth/Register';
 import Login from './Auth/Login';
 import ForgotPassword from './Forgot/ForgotPassword';
-import Booking from './Booking/Index';
 import Wishlist from './Wishlist/Index';
 import MyBooking from './MyBooking/index';
 import ManageEvent from './Manage/Index';
@@ -35,16 +34,8 @@ import http from '../helper/http';
 import {getUserData} from '../redux/reducers/profile';
 import globalStyle from '../assets/globalStyles';
 import Home from './Home';
-import Payment from './Payment/Index';
-import EditProfile from './Profile/EditProfile';
-import ChangePassword from './Auth/ChangePassword';
-import ConfirmPayment from './ConfirmPayment/Index';
-import Create from './Manage/Create';
-import Update from './Manage/Update';
-import EventDetail from './eventDetail/Index';
 import Headers from '../components/Headers';
 
-const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 

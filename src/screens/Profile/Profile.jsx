@@ -9,7 +9,7 @@ import card from '../../assets/Image/card.png';
 import {useSelector} from 'react-redux';
 import http from '../../helper/http';
 import {TouchableRipple} from 'react-native-paper';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {getUserData} from '../../redux/reducers/profile';
 
@@ -18,7 +18,6 @@ const Profile = () => {
   const token = useSelector(state => state.auth.token);
   const user = useSelector(state => state.profile.data);
   const navigation = useNavigation();
-  const route = useRoute();
   const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
 
   const getUser = React.useCallback(async () => {

@@ -7,7 +7,6 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  DrawerLayoutAndroid,
 } from 'react-native';
 import {
   Searchbar,
@@ -20,17 +19,12 @@ import {useDispatch} from 'react-redux';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/dist/Feather';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/dist/Octicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../assets/globalStyles';
-import userImage from '../assets/Image/userDefault.png';
 import {useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import http from '../helper/http';
-import {logout as logoutAction} from '../redux/reducers/authReducers';
 import moment from 'moment';
 import Foundation from 'react-native-vector-icons/dist/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
@@ -60,8 +54,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const [searchEvent, setSearchEvent] = React.useState('');
   const [eventList, setEventList] = React.useState([]);
-  const drawer = React.useRef(null);
-  const USER_DEFAULT_IMAGE = Image.resolveAssetSource(userImage).uri;
   const navigation = useNavigation();
   const deviceToken = useSelector(state => state.deviceToken.deviceToken);
   const [category, setCategory] = React.useState([]);
