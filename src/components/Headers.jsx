@@ -12,18 +12,6 @@ const Headers = ({navigation}) => {
   const onScreen = state.history[state.history.length - 1];
   const onScreenName = state?.routes.filter(o => o.key === onScreen.key);
 
-  // if (!!onScreenName.length) {
-  //   if (onScreenName[0].state) {
-  //     dispatch(
-  //       getRoutes(
-  //         onScreenName[0].state.routes[onScreenName[0].state.index].name,
-  //       ),
-  //     );
-  //   } else {
-  //     dispatch(getRoutes(onScreenName[0].name));
-  //   }
-  // }
-
   return (
     <View style={styles.headerContainer}>
       <View>
@@ -61,7 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   headerTitle: {
-    width: '80%',
+    width: '70%',
     justifyContent: 'center',
     alignItems: 'center',
   },
