@@ -300,12 +300,6 @@ export default function EditProfile() {
             </Button>
           </View>
         </View>
-        <View style={globalStyle.bookingHeader}>
-          <TouchableRipple onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-          </TouchableRipple>
-          <Text style={globalStyle.textHeader}>Edit Profile</Text>
-        </View>
         <Formik
           initialValues={{
             fullName: '',
@@ -396,26 +390,6 @@ export default function EditProfile() {
                     <Text>{editFullname ? 'Close' : 'Edit'}</Text>
                   </TouchableOpacity>
                 </View>
-                {/* <View style={styles.profileData}>
-                  {editUserName && (
-                    <TextInput
-                      style={styles.input}
-                      placeholder="username"
-                      keyboardType="default"
-                      value={values.userName}
-                      onChangeText={handleChange('userName')}
-                      onBlur={handleBlur('userName')}
-                    />
-                  )}
-                  {!editUserName && (
-                    <Text style={styles.titleStyle}>
-                      {user?.userName ? user.userName : 'add username'}
-                    </Text>
-                  )}
-                  <TouchableOpacity onPress={handleEditUserNamae}>
-                    <Text>{editUserName ? 'Close' : 'Edit'}</Text>
-                  </TouchableOpacity>
-                </View> */}
                 <View style={styles.profileData}>
                   {editEmail && (
                     <TextInput
@@ -489,7 +463,8 @@ export default function EditProfile() {
                     titleStyle={styles.titleStyle}
                     style={styles.listAccordionStyle}>
                     <List.Accordion
-                      title="Select Profession"
+                      title={professionId ? professionId : 'Select Profession'}
+                      titleStyle={styles.titleAccordionValue}
                       style={styles.accordionBg}>
                       <TouchableRipple
                       // onPress={() => handleClickProfession(item.title)}
@@ -510,7 +485,10 @@ export default function EditProfile() {
                     style={styles.listAccordionStyle}
                     titleStyle={styles.titleStyle}>
                     <List.Accordion
-                      title="Select Nationality"
+                      titleStyle={styles.titleAccordionValue}
+                      title={
+                        selectCountries ? selectCountries : 'Select Nationality'
+                      }
                       style={styles.accordionBg}>
                       <TouchableRipple>
                         <RadioGroup
@@ -608,12 +586,18 @@ const styles = StyleSheet.create({
   },
   accordion: {
     width: '100%',
+    color: 'black',
   },
   titleStyle: {
     fontSize: 20,
+    color: 'black',
   },
   accordionBg: {
     backgroundColor: 'white',
+    color: 'black',
+  },
+  titleAccordionValue: {
+    color: 'black',
   },
   ImageParent: {
     position: 'relative',
@@ -625,8 +609,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profileDataContainer: {width: '100%', alignItems: 'flex-start'},
-  radioDirection: {flexDirection: 'row'},
-  listAccordionStyle: {width: '100%', backgroundColor: 'white'},
+  radioDirection: {flexDirection: 'row', color: 'black'},
+  listAccordionStyle: {width: '100%', backgroundColor: 'white', color: 'black'},
   selectProfession: {
     backgroundColor: 'black',
     width: 15,
@@ -644,6 +628,7 @@ const styles = StyleSheet.create({
   radioProfession: {
     alignItems: 'start',
     fontSize: 32,
+    color: 'black',
   },
   sendDataButton: {
     height: 50,

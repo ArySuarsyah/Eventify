@@ -74,7 +74,7 @@ export default function ConfirmPayment() {
 
   const handleOkey = () => {
     hideModal();
-    navigation.navigate('MyBooking');
+    navigation.navigate('History');
   };
 
   return (

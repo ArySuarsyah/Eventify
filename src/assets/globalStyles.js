@@ -172,6 +172,7 @@ const globalStyle = StyleSheet.create({
     gap: 10,
   },
   textHeader: {
+    color: '#000',
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
@@ -321,7 +322,7 @@ const globalStyle = StyleSheet.create({
     color: 'white',
   },
   containerProfileDrawwer: {
-    paddingTop: 40,
+    paddingVertical: 50,
     paddingHorizontal: 20,
     flexDirection: 'row',
     gap: 10,
@@ -364,6 +365,11 @@ const globalStyle = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     textTransform: 'capitalize',
     color: 'grey',
+  },
+  textTitleWhite: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

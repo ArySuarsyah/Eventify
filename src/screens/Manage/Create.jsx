@@ -10,7 +10,6 @@ import {
 } from 'react-native-paper';
 import React from 'react';
 import globalStyle from '../../assets/globalStyles';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
@@ -173,12 +172,6 @@ export default function Create() {
             </View>
           </Modal>
         </Portal>
-        <View style={globalStyle.bookingHeader}>
-          <TouchableRipple onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-          </TouchableRipple>
-          <Text style={globalStyle.textHeader}>Create</Text>
-        </View>
         <View style={globalStyle.dataContainer}>
           <Formik
             initialValues={{

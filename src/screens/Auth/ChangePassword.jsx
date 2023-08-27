@@ -111,10 +111,6 @@ export default function ChangePassword() {
             </TouchableRipple>
           </Modal>
         </Portal>
-        <View style={globalStyle.bookingHeader}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-          <Text style={globalStyle.textHeader}>Change Password</Text>
-        </View>
         <View>
           <Formik
             initialValues={{

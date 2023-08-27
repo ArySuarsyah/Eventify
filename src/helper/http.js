@@ -7,7 +7,7 @@ const http = token => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: 'https://lazy-ruby-sweater.cyclic.cloud',
+    baseURL: 'https://fw15-backend-hazel.vercel.app',
 
     headers,
   });

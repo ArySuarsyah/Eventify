@@ -160,7 +160,7 @@ export default function Index() {
                 <View style={styles.buttonBuyParent}>
                   <Button
                     style={styles.buttonStyle}
-                    onPress={() => navigation.navigate('Booking')}>
+                    onPress={() => navigation.navigate('Checkout')}>
                     <Text style={{color: '#fff'}}>Buy Tickets!</Text>
                   </Button>
                 </View>

@@ -30,17 +30,32 @@ import userImage from '../assets/Image/userDefault.png';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import http from '../helper/http';
-import EventList from '../components/Home/EventList';
 import {logout as logoutAction} from '../redux/reducers/authReducers';
 import moment from 'moment';
 import Foundation from 'react-native-vector-icons/dist/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
 import {getId} from '../redux/reducers/event';
 import {getUserData} from '../redux/reducers/profile';
+import Icon from 'react-native-vector-icons/dist/Feather';
+import {Tooltip} from 'react-native-paper';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import EventDetail from '../screens/eventDetail/Index';
+import EditProfile from './Profile/EditProfile';
+import ChangePassword from './Auth/ChangePassword';
+import ConfirmPayment from './ConfirmPayment/Index';
+import Create from './Manage/Create';
+import Update from './Manage/Update';
+import Profile from './Profile/Profile';
+import Booking from './Booking/Index';
+import Payment from './Payment/Index';
+import MyBooking from './MyBooking';
+import MyWishlist from './Wishlist/Index';
+import ManageEvent from './Manage/Index';
 
-export default function Home() {
+const Stack = createNativeStackNavigator();
+
+const Home = () => {
   const token = useSelector(state => state.auth.token);
-  const user = useSelector(state => state.profile.data);
 
   const dispatch = useDispatch();
   const [searchEvent, setSearchEvent] = React.useState('');
@@ -56,17 +71,6 @@ export default function Home() {
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-
-  const logout = async () => {
-    try {
-      await AsyncStorage.removeItem('auth');
-      dispatch(logoutAction());
-    } catch (e) {
-      console.log(e);
-    }
-
-    console.log('Done.');
-  };
 
   const onChangeSearch = query => setSearchEvent(query);
 
@@ -135,269 +139,295 @@ export default function Home() {
 
   const goToDetail = val => {
     dispatch(getId(val));
-    navigation.navigate('EventDetail');
+    navigation.navigate('Event Detail');
   };
 
-  const navigationView = () => (
-    <View style={[globalStyle.navigationContainer]}>
-      <View style={globalStyle.profileNavigation}>
-        <View style={globalStyle.drawerUserImage}>
-          <Image
-            source={{
-              uri: user.picture
-                ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
-                : USER_DEFAULT_IMAGE,
-            }}
-            width={70}
-            height={70}
-          />
-        </View>
-        <View>
-          <Text style={globalStyle.subtitle}>{user.fullName}</Text>
-          <Text style={globalStyle.subtitle}>{user.email}</Text>
-        </View>
-        <Feather name="chevron-right" size={50} />
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View style={globalStyle.drawerNavList}>
-            <FontAwesome name="user-circle" color="#c0bfbc" size={30} />
-            <Text style={globalStyle.drawerNavPoint}>Profile</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('MyBooking')}>
-          <View style={globalStyle.drawerNavList}>
-            <Octicons name="checklist" color="#c0bfbc" size={30} />
-            <Text style={globalStyle.drawerNavPoint}>My Booking</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
-          <View style={globalStyle.drawerNavList}>
-            <FontAwesome name="heart" color="#c0bfbc" size={30} />
-            <Text style={globalStyle.drawerNavPoint}>My Wishlist</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ManageEvent')}>
-          <View style={globalStyle.drawerNavList}>
-            <Ionicons name="cog" color="#c0bfbc" size={30} />
-            <Text style={globalStyle.drawerNavPoint}>Manage Event</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={logout}>
-          <View style={globalStyle.drawerNavList}>
-            <MaterialIcons name="logout" color="#f03e3e" size={30} />
-            <Text style={[globalStyle.drawerNavPoint, globalStyle.redColor]}>
-              Logout
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  // const navigationView = () => (
+  //   <View style={[globalStyle.navigationContainer]}>
+  //     <View style={globalStyle.profileNavigation}>
+  //       <View style={globalStyle.drawerUserImage}>
+  //         <Image
+  //           source={{
+  //             uri: user.picture
+  //               ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
+  //               : USER_DEFAULT_IMAGE,
+  //           }}
+  //           width={70}
+  //           height={70}
+  //         />
+  //       </View>
+  //       <View>
+  //         <Text style={globalStyle.subtitle}>{user.fullName}</Text>
+  //         <Text style={globalStyle.subtitle}>{user.email}</Text>
+  //       </View>
+  //       <Feather name="chevron-right" size={50} />
+  //     </View>
+  //     <View>
+  //       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+  //         <View style={globalStyle.drawerNavList}>
+  //           <FontAwesome name="user-circle" color="#c0bfbc" size={30} />
+  //           <Text style={globalStyle.drawerNavPoint}>Profile</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity onPress={() => navigation.navigate('MyBooking')}>
+  //         <View style={globalStyle.drawerNavList}>
+  //           <Octicons name="checklist" color="#c0bfbc" size={30} />
+  //           <Text style={globalStyle.drawerNavPoint}>My Booking</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
+  //         <View style={globalStyle.drawerNavList}>
+  //           <FontAwesome name="heart" color="#c0bfbc" size={30} />
+  //           <Text style={globalStyle.drawerNavPoint}>My Wishlist</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity onPress={() => navigation.navigate('ManageEvent')}>
+  //         <View style={globalStyle.drawerNavList}>
+  //           <Ionicons name="cog" color="#c0bfbc" size={30} />
+  //           <Text style={globalStyle.drawerNavPoint}>Manage Event</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity onPress={logout}>
+  //         <View style={globalStyle.drawerNavList}>
+  //           <MaterialIcons name="logout" color="#f03e3e" size={30} />
+  //           <Text style={[globalStyle.drawerNavPoint, globalStyle.redColor]}>
+  //             Logout
+  //           </Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //     </View>
+  //   </View>
+  // );
 
   return (
     <SafeAreaView style={styles.saveArea}>
-      <DrawerLayoutAndroid
-        ref={drawer}
-        drawerWidth={300}
-        drawerPosition="left"
-        renderNavigationView={navigationView}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <View style={styles.gap}>
-              <View style={styles.navbar}>
-                <Feather
-                  name="menu"
-                  size={30}
-                  color="#02A8A8"
-                  onPress={() => drawer.current.openDrawer()}
-                />
-                <Feather name="message-square" size={30} color="#02A8A8" />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.gap}>
+            <Searchbar
+              placeholder="Search"
+              onChangeText={onChangeSearch}
+              value={searchEvent}
+            />
+          </View>
+          <View style={styles.dateParent}>
+            {eventList.map((item, index) => {
+              return (
+                <View
+                  key={item.id}
+                  style={
+                    index === 2 ? styles.dateStyleChoose : styles.dateStyle
+                  }>
+                  <Text style={styles.colorDate}>
+                    {moment(item.date).format('DD')}
+                  </Text>
+                  <Text style={styles.colorDate}>
+                    {moment(item.date).format('ddd')}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+          <View style={styles.bgColor}>
+            <View style={styles.eventListContainer}>
+              <View style={styles.eventHeader}>
+                <Text style={{fontSize: 20}}>Events For You</Text>
+                <TouchableRipple onPress={showModal}>
+                  <FontAwesome name="sliders" size={25} color="#02A8A8" />
+                </TouchableRipple>
+                <Portal>
+                  <Modal
+                    visible={visible}
+                    onDismiss={hideModal}
+                    contentContainerStyle={styles.modalContainerStyle}
+                    style={{
+                      alignItems: 'center',
+                      gap: 10,
+                    }}>
+                    <Text style={styles.sortText}>Sort By:</Text>
+                    <View>
+                      <TouchableRipple onPress={() => setSortEvent('title')}>
+                        <Text style={styles.sortText}>Title</Text>
+                      </TouchableRipple>
+                      <TouchableRipple onPress={() => setSortEvent('date')}>
+                        <Text style={styles.sortText}>Date</Text>
+                      </TouchableRipple>
+                      <TouchableRipple onPress={() => setSortEvent('location')}>
+                        <Text style={styles.sortText}>Location</Text>
+                      </TouchableRipple>
+                      <TouchableRipple onPress={() => setSortEvent('category')}>
+                        <Text style={styles.sortText}>Category</Text>
+                      </TouchableRipple>
+                      <Button
+                        onPress={hideModal}
+                        style={{
+                          width: '25%',
+                          alignSelf: 'center',
+                          marginVertical: 10,
+                          backgroundColor: '#02A8A8',
+                        }}>
+                        <Text style={{color: 'white'}}>
+                          {sortEvent ? 'Ok' : 'Cancel'}
+                        </Text>
+                      </Button>
+                    </View>
+                  </Modal>
+                </Portal>
               </View>
-              <Searchbar
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchEvent}
-              />
-            </View>
-            <View style={styles.dateParent}>
-              {eventList.map((item, index) => {
-                return (
+              <View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.eventList}>
+                    {eventList.map(event => (
+                      // <EventStack
+                      //   key={`event-${event.id}`}
+                      //   title={event?.title}
+                      //   date={event?.date}
+                      //   id={event?.id}
+                      //   image={`https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`}
+                      //   event={event}
+                      //   styles={styles}
+                      // />
+                      <Tooltip key={`Event-${event.id}`} title={event.title}>
+                        <TouchableRipple onPress={() => goToDetail(event)}>
+                          <View style={styles.relative}>
+                            <View style={styles.imgParent}>
+                              <LinearGradient
+                                colors={[
+                                  'rgba(0, 0, 0, 0)',
+                                  'rgba(0, 0, 0, 0.55)',
+                                ]}
+                                style={globalStyle.bgGradient}
+                              />
+                              <Image
+                                source={{
+                                  uri: `https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`,
+                                }}
+                                style={globalStyle.imgEvent}
+                              />
+                            </View>
+                            <View style={styles.eventDesc}>
+                              <Text style={styles.eventTime}>
+                                {moment(event.date).format(
+                                  'ddd, D MMMM YYYY, h:mm a',
+                                )}
+                              </Text>
+                              <Text
+                                numberOfLines={2}
+                                ellipsizeMode="tail"
+                                style={styles.eventTitle}>
+                                {event.title}
+                              </Text>
+                              <View style={styles.arrowIcon}>
+                                <Icon
+                                  name="arrow-right"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              </View>
+                            </View>
+                          </View>
+                        </TouchableRipple>
+                      </Tooltip>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+              <View>
+                <Text style={{fontSize: 20}}>Discover</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={{flexDirection: 'row', gap: 50, padding: 10}}>
+                    {category.map(item => {
+                      return (
+                        <TouchableOpacity
+                          onPress={() => getEventByCategory(1, 10, item.name)}
+                          key={item.id}>
+                          <View
+                            style={[styles.listNavEvent, styles.shadowProp]}>
+                            <View
+                              style={{
+                                padding: 7,
+                                backgroundColor: '#dedede',
+                                borderRadius: 50,
+                                width: 40,
+                                height: 40,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              {item.name === 'Sport' && (
+                                <MaterialIcons
+                                  name="sports-soccer"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Arts' && (
+                                <FontAwesome
+                                  name="image"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Outdoors' && (
+                                <Foundation
+                                  name="trees"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Workshop' && (
+                                <MaterialCommunityIcons
+                                  name="account-network"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Festival' && (
+                                <Feather
+                                  name="umbrella"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Fashion' && (
+                                <MaterialCommunityIcons
+                                  name="human-queue"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                              {item.name === 'Music' && (
+                                <Feather
+                                  name="music"
+                                  size={20}
+                                  color="#02A8A8"
+                                />
+                              )}
+                            </View>
+                            <Text style={{fontSize: 15}}>{item.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </ScrollView>
+              </View>
+              <View style={styles.gapLarge}>
+                {getByCategory.map(item => (
                   <View
                     key={item.id}
-                    style={
-                      index === 2 ? styles.dateStyleChoose : styles.dateStyle
-                    }>
-                    <Text style={styles.colorDate}>
-                      {moment(item.date).format('DD')}
-                    </Text>
-                    <Text style={styles.colorDate}>
-                      {moment(item.date).format('ddd')}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-            <View style={styles.bgColor}>
-              <View style={styles.eventListContainer}>
-                <View style={styles.eventHeader}>
-                  <Text style={{fontSize: 20}}>Events For You</Text>
-                  <TouchableRipple onPress={showModal}>
-                    <FontAwesome name="sliders" size={25} color="#02A8A8" />
-                  </TouchableRipple>
-                  <Portal>
-                    <Modal
-                      visible={visible}
-                      onDismiss={hideModal}
-                      contentContainerStyle={styles.modalContainerStyle}
-                      style={{
-                        alignItems: 'center',
-                        gap: 10,
-                      }}>
-                      <Text style={styles.sortText}>Sort By:</Text>
-                      <View>
-                        <TouchableRipple onPress={() => setSortEvent('title')}>
-                          <Text style={styles.sortText}>Title</Text>
-                        </TouchableRipple>
-                        <TouchableRipple onPress={() => setSortEvent('date')}>
-                          <Text style={styles.sortText}>Date</Text>
-                        </TouchableRipple>
-                        <TouchableRipple
-                          onPress={() => setSortEvent('location')}>
-                          <Text style={styles.sortText}>Location</Text>
-                        </TouchableRipple>
-                        <TouchableRipple
-                          onPress={() => setSortEvent('category')}>
-                          <Text style={styles.sortText}>Category</Text>
-                        </TouchableRipple>
-                        <Button
-                          onPress={hideModal}
-                          style={{
-                            width: '25%',
-                            alignSelf: 'center',
-                            marginVertical: 10,
-                            backgroundColor: '#02A8A8',
-                          }}>
-                          <Text style={{color: 'white'}}>
-                            {sortEvent ? 'Ok' : 'Cancel'}
-                          </Text>
-                        </Button>
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={styles.gapLarge}>
+                      <View style={globalStyle.dateStyle}>
+                        <Text style={globalStyle.date}>
+                          {moment(item.date).format('DD')}
+                        </Text>
+                        <Text>{moment(item.date).format('ddd')}</Text>
                       </View>
-                    </Modal>
-                  </Portal>
-                </View>
-                <View>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <View style={styles.eventList}>
-                      {eventList.map(event => (
-                        <EventList
-                          key={`event-${event.id}`}
-                          title={event?.title}
-                          date={event?.date}
-                          id={event?.id}
-                          image={`https://res.cloudinary.com/arsrsyh/image/upload/v1690531959/${event.picture}`}
-                          event={event}
-                          styles={styles}
-                        />
-                      ))}
                     </View>
-                  </ScrollView>
-                </View>
-                <View>
-                  <Text style={{fontSize: 20}}>Discover</Text>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <View style={{flexDirection: 'row', gap: 50, padding: 10}}>
-                      {category.map(item => {
-                        return (
-                          <TouchableOpacity
-                            onPress={() => getEventByCategory(1, 10, item.name)}
-                            key={item.id}>
-                            <View
-                              style={[styles.listNavEvent, styles.shadowProp]}>
-                              <View
-                                style={{
-                                  padding: 7,
-                                  backgroundColor: '#dedede',
-                                  borderRadius: 50,
-                                  width: 40,
-                                  height: 40,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                {item.name === 'Sport' && (
-                                  <MaterialIcons
-                                    name="sports-soccer"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Arts' && (
-                                  <FontAwesome
-                                    name="image"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Outdoors' && (
-                                  <Foundation
-                                    name="trees"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Workshop' && (
-                                  <MaterialCommunityIcons
-                                    name="account-network"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Festival' && (
-                                  <Feather
-                                    name="umbrella"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Fashion' && (
-                                  <MaterialCommunityIcons
-                                    name="human-queue"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                                {item.name === 'Music' && (
-                                  <Feather
-                                    name="music"
-                                    size={20}
-                                    color="#02A8A8"
-                                  />
-                                )}
-                              </View>
-                              <Text style={{fontSize: 15}}>{item.name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                        );
-                      })}
-                    </View>
-                  </ScrollView>
-                </View>
-                <View style={styles.gapLarge}>
-                  {getByCategory.map(item => (
-                    <View
-                      key={item.id}
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View style={styles.gapLarge}>
-                        <View style={globalStyle.dateStyle}>
-                          <Text style={globalStyle.date}>
-                            {moment(item.date).format('DD')}
-                          </Text>
-                          <Text>{moment(item.date).format('ddd')}</Text>
-                        </View>
-                      </View>
+                    <TouchableRipple onPress={() => goToDetail(item)}>
                       <View>
                         <View>
                           <View style={styles.imgParent}>
@@ -428,29 +458,51 @@ export default function Home() {
                             style={styles.eventTitle}>
                             {item.title}
                           </Text>
-                          <TouchableRipple onPress={() => goToDetail(item)}>
-                            <View style={styles.arrowIcon}>
-                              <Feather
-                                name="arrow-right"
-                                size={20}
-                                color="#02A8A8"
-                              />
-                            </View>
-                          </TouchableRipple>
+                          <View style={styles.arrowIcon}>
+                            <Feather
+                              name="arrow-right"
+                              size={20}
+                              color="#02A8A8"
+                            />
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  ))}
-                </View>
+                    </TouchableRipple>
+                  </View>
+                ))}
               </View>
             </View>
           </View>
-        </ScrollView>
-      </DrawerLayoutAndroid>
+        </View>
+      </ScrollView>
+      {/* </DrawerLayoutAndroid> */}
     </SafeAreaView>
   );
-}
+};
 
+const StackNav = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="HomeStack" component={Home} />
+      <Stack.Screen name="Event Detail" component={EventDetail} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Checkout" component={Booking} />
+      <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="Edit Profile" component={EditProfile} />
+      <Stack.Screen name="Change Password" component={ChangePassword} />
+      <Stack.Screen name="Confirm Payment" component={ConfirmPayment} />
+      <Stack.Screen name="History" component={MyBooking} />
+      <Stack.Screen name="Wishlist" component={MyWishlist} />
+      <Stack.Screen name="Manage Event" component={ManageEvent} />
+      <Stack.Screen name="Create" component={Create} />
+      <Stack.Screen name="Update" component={Update} />
+    </Stack.Navigator>
+  );
+};
+
+export default StackNav;
+
+// Styles
 const styles = StyleSheet.create({
   text: {
     color: 'black',

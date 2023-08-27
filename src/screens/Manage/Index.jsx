@@ -109,12 +109,6 @@ export default function ManageEvent() {
             </View>
           </Modal>
         </Portal>
-        <View style={globalStyle.bookingHeader}>
-          <TouchableRipple onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-          </TouchableRipple>
-          <Text style={globalStyle.textHeader}>Manage</Text>
-        </View>
         <View style={globalStyle.dataContainer}>
           <TouchableRipple
             onPress={goToCreate}

@@ -33,14 +33,6 @@ const Profile = () => {
   return (
     <View style={{gap: 50}}>
       <View style={{paddingHorizontal: 20, gap: 20, paddingTop: 20}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableRipple onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-          </TouchableRipple>
-          <Text style={{width: '80%', fontSize: 18, textAlign: 'center'}}>
-            {route.name}
-          </Text>
-        </View>
         <View style={{justifyContent: 'center', alignItems: 'center', gap: 20}}>
           <View style={globalStyle.userImage}>
             <Image
@@ -85,7 +77,7 @@ const Profile = () => {
         </ScrollView>
       </View>
       <View style={{gap: 20}}>
-        <TouchableRipple onPress={() => navigation.navigate('EditProfile')}>
+        <TouchableRipple onPress={() => navigation.navigate('Edit Profile')}>
           <View
             style={{
               flexDirection: 'row',
@@ -99,7 +91,7 @@ const Profile = () => {
             <AntDesign name="right" size={30} color="#02A8A8" />
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => navigation.navigate('ChangePassword')}>
+        <TouchableRipple onPress={() => navigation.navigate('Change Password')}>
           <View
             style={{
               flexDirection: 'row',

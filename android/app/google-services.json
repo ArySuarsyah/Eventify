@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1050756564531",
-    "project_id": "eventify-fc6b4",
-    "storage_bucket": "eventify-fc6b4.appspot.com"
+    "project_number": "1005078667444",
+    "project_id": "eventify-b4875",
+    "storage_bucket": "eventify-b4875.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1050756564531:android:edf65fa132bc4afeff8546",
+        "mobilesdk_app_id": "1:1005078667444:android:8ab4120c0e4405510bf7e1",
         "android_client_info": {
           "package_name": "com.arsrsyh.eventify"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1050756564531-5a37qp9niao1celfu667er2vhlhjialt.apps.googleusercontent.com",
+          "client_id": "1005078667444-412h6506up8gqo0008si7c65mfb61bcc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBiZUfbZ5569LZsKIpDS2-TXfsoCPfrvz4"
+          "current_key": "AIzaSyDSC70fUSUSqouDg-lD7xAgzswFrWcMDDQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1050756564531-5a37qp9niao1celfu667er2vhlhjialt.apps.googleusercontent.com",
+              "client_id": "1005078667444-412h6506up8gqo0008si7c65mfb61bcc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

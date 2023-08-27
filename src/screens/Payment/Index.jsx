@@ -58,29 +58,15 @@ export default function Payment() {
     setSelectedCard(item);
     setPaymentMethod(item);
   };
-  // const radioButtons = React.useMemo(
-  //   () => [
-  //     {
-  //       id: '1',
-  //       value: 'option1',
-  //     },
-  //   ],
-  //   [],
-  // );
+
   const checkoutPayment = () => {
     dispatch(selectPayment(paymentMethod));
-    navigation.navigate('ConfirmPayment');
+    navigation.navigate('Confirm Payment');
   };
   return (
     <>
       <ScrollView>
         <View style={styles.container}>
-          <View style={globalStyle.bookingHeader}>
-            <TouchableRipple onPress={() => navigation.goBack()}>
-              <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-            </TouchableRipple>
-            <Text style={globalStyle.textHeader}>Payment</Text>
-          </View>
           <View style={styles.accordionParent}>
             <List.Section
               title="Payment Method"

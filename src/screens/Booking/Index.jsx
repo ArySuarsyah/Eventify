@@ -1,6 +1,6 @@
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {TouchableRipple} from 'react-native-paper';
-import React, {useState} from 'react';
+import {TouchableRipple, Modal, Portal, Button} from 'react-native-paper';
+import React, {useState, useCallback} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import Octicons from 'react-native-vector-icons/dist/Octicons';
 import Foundation from 'react-native-vector-icons/dist/Foundation';
@@ -15,9 +15,10 @@ import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {getData} from '../../redux/reducers/paymentReducers';
+import {ScrollView} from 'react-native-gesture-handler';
+import Feather from 'react-native-vector-icons/dist/Feather';
 
 export default function Booking() {
-  const eventId = useSelector(state => state.event.data);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -33,6 +34,15 @@ export default function Booking() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [section, setSection] = useState('Reg');
   const [quantity, setQuantity] = useState(0);
+
+  const [messsage, setMessage] = useState('');
+  const [status, setStatus] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const showModal = useCallback(() => {
+    setVisible(true);
+  }, [setVisible]);
+  const hideModal = () => setVisible(false);
 
   const countRegMinus = () => {
     if (countReg > 0) {
@@ -64,20 +74,6 @@ export default function Booking() {
     setCountVvip(countVvip + 1);
   };
 
-  // if (countReg) {
-  //   setTotalPrice(countReg * 15);
-  // } else if (countVip) {
-  //   setTotalPrice(countVip * 35);
-  // } else if (countVvip) {
-  //   setTotalPrice(countVvip * 50);
-  // } else {
-  //   setTotalPrice(0);
-  // }
-
-  // countReg ? setTotalPrice(countReg * 15) : setTotalPrice(0);
-  // countVip ? setTotalPrice(countVip * 35) : setTotalPrice(0);
-  // countVvip ? setTotalPrice(countVvip * 50) : setTotalPrice(0);
-
   useEffect(() => {
     const price = countReg * 15 + countVip * 35 + countVvip * 50;
     setQuantity(countReg + countVip + countVvip);
@@ -89,193 +85,231 @@ export default function Booking() {
   }, [countReg, countVip, countVvip]);
 
   const handleBuy = () => {
-    const form = {
-      section: section,
-      quantity: quantity,
-      price: totalPrice,
-    };
+    if (section && quantity && totalPrice) {
+      const form = {
+        section: section,
+        quantity: quantity,
+        price: totalPrice,
+      };
+      dispatch(getData(form));
+      navigation.navigate('Payment');
+    } else {
+      setStatus(true);
+      setMessage('Please Input Checkout Data');
+    }
+  };
 
-    dispatch(getData(form));
-    navigation.navigate('Payment');
+  useEffect(() => {
+    if (status) {
+      showModal();
+    }
+  }, [status, showModal]);
+
+  const handleOkey = () => {
+    hideModal();
   };
 
   return (
-    <View>
-      <View style={globalStyle.bookingHeader}>
-        <TouchableRipple onPress={() => navigation.goBack()}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-        </TouchableRipple>
-        <Text style={globalStyle.textHeader}>Checkout</Text>
-      </View>
-      <View style={globalStyle.stadiumContainer}>
-        <Image
-          source={{
-            uri: stadium,
-          }}
-          style={globalStyle.stadiumImg}
-        />
-      </View>
-      <View style={globalStyle.ticketPrice}>
-        <Text style={styles.textTicket}>Tickets</Text>
-        <View style={globalStyle.byPriceContainer}>
-          <Text style={styles.textByPrice}>By Price</Text>
-          <AntDesign
-            name="swap"
-            size={30}
-            color="#02A8A8"
-            style={globalStyle.swapIcon}
+    <ScrollView>
+      <View>
+        <Portal>
+          <Modal
+            visible={visible}
+            onDismiss={hideModal}
+            contentContainerStyle={globalStyle.containerStyle}
+            style={globalStyle.modalStyle}>
+            {messsage === 'Transaction success!!' && (
+              <View style={globalStyle.iconSuccess}>
+                <Feather name="check" color="white" size={30} />
+              </View>
+            )}
+            {messsage !== 'Transaction success!!' && (
+              <View style={globalStyle.iconFailed}>
+                <AntDesign name="close" color="white" size={30} />
+              </View>
+            )}
+            <Text style={globalStyle.textCenter}>{messsage}</Text>
+            <TouchableRipple
+              style={globalStyle.buttonHeight}
+              onPress={handleOkey}>
+              <Button style={globalStyle.button}>
+                <Text style={globalStyle.colorWhite}>Ok</Text>
+              </Button>
+            </TouchableRipple>
+          </Modal>
+        </Portal>
+        <View style={globalStyle.stadiumContainer}>
+          <Image
+            source={{
+              uri: stadium,
+            }}
+            style={globalStyle.stadiumImg}
           />
         </View>
-      </View>
-      <View style={styles.gapVertical}>
-        <View style={globalStyle.sectionContainer}>
-          <View>
-            <Image
-              source={{
-                uri: secThree,
-              }}
-              style={styles.sectionIcon}
+        <View style={globalStyle.ticketPrice}>
+          <Text style={styles.textTicket}>Tickets</Text>
+          <View style={globalStyle.byPriceContainer}>
+            <Text style={styles.textByPrice}>By Price</Text>
+            <AntDesign
+              name="swap"
+              size={30}
+              color="#02A8A8"
+              style={globalStyle.swapIcon}
             />
           </View>
-          <View style={globalStyle.sectionName}>
-            <Text style={styles.textSection}>Section reg, Row 1</Text>
-            <Text style={styles.textAvaible}>12 Seats available</Text>
-            <Text style={styles.textSection}>Quantity</Text>
-          </View>
-          <View style={styles.priceContainer}>
-            <Text style={styles.textSection}>$15</Text>
-            <Text style={styles.textAvaible}>per person</Text>
-            <View style={styles.quantityParent}>
-              <TouchableRipple
-                onPress={countRegMinus}
-                disabled={countVip || countVvip ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="minus" size={15} />
-                </View>
-              </TouchableRipple>
-              <Text style={styles.textCount}>{countReg}</Text>
-              <TouchableRipple
-                onPress={countRegPlus}
-                disabled={countVip || countVvip ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="plus" size={15} />
-                </View>
-              </TouchableRipple>
-            </View>
-          </View>
-          <View />
         </View>
-        <View style={globalStyle.sectionContainer}>
-          <View>
-            <Image
-              source={{
-                uri: secTwo,
-              }}
-              style={styles.sectionIcon}
-            />
-          </View>
-          <View style={globalStyle.sectionName}>
-            <Text style={styles.textSection}>Section reg, Row 1</Text>
-            <Text style={styles.textAvaible}>12 Seats available</Text>
-            <Text style={styles.textSection}>Quantity</Text>
-          </View>
-          <View style={styles.priceContainer}>
-            <Text style={styles.textSection}>$35</Text>
-            <Text style={styles.textAvaible}>per person</Text>
-            <View style={styles.quantityParent}>
-              <TouchableRipple
-                onPress={vipCounMin}
-                disabled={countReg || countVvip ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="minus" size={15} />
-                </View>
-              </TouchableRipple>
-              <Text style={styles.textCount}>{countVip}</Text>
-              <TouchableRipple
-                onPress={vipCounPlus}
-                disabled={countReg || countVvip ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="plus" size={15} />
-                </View>
-              </TouchableRipple>
-            </View>
-          </View>
-          <View />
-        </View>
-        <View style={globalStyle.sectionContainer}>
-          <View>
-            <Image
-              source={{
-                uri: secOne,
-              }}
-              style={styles.sectionIcon}
-            />
-          </View>
-          <View style={globalStyle.sectionName}>
-            <Text style={styles.textSection}>Section reg, Row 1</Text>
-            <Text style={styles.textAvaible}>12 Seats available</Text>
-            <Text style={styles.textSection}>Quantity</Text>
-          </View>
-          <View style={styles.priceContainer}>
-            <Text style={styles.textSection}>$50</Text>
-            <Text style={styles.textAvaible}>per person</Text>
-            <View style={styles.quantityParent}>
-              <TouchableRipple
-                onPress={vvipCountMin}
-                disabled={countVip || countReg ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="minus" size={15} />
-                </View>
-              </TouchableRipple>
-              <Text style={styles.textCount}>{countVvip}</Text>
-              <TouchableRipple
-                onPress={vvipCountPlus}
-                disabled={countVip || countReg ? true : false}>
-                <View style={styles.quantityCount}>
-                  <AntDesign name="plus" size={15} />
-                </View>
-              </TouchableRipple>
-            </View>
-          </View>
-          <View />
-        </View>
-      </View>
-      <View style={globalStyle.bookingFooter}>
-        <View style={globalStyle.result}>
-          <View style={globalStyle.resultLeftSide}>
-            <Text style={styles.textCheckSection}>
-              {(countReg && 'REG') ||
-                (countVip && 'VIP') ||
-                (countVvip && 'VVIP')}
-            </Text>
-            <Octicons name="dot-fill" size={20} />
-            <View style={styles.totalTicket}>
+        <View style={styles.gapVertical}>
+          <View style={globalStyle.sectionContainer}>
+            <View>
               <Image
                 source={{
-                  uri:
-                    countReg || countVip || countVvip
-                      ? (countReg && secThree) ||
-                        (countVip && secTwo) ||
-                        (countVvip && secOne)
-                      : SecFour,
+                  uri: secThree,
                 }}
-                style={styles.totalTicketIcon}
+                style={styles.sectionIcon}
               />
-              <Text>{countReg || countVip || countVvip}</Text>
             </View>
-            <Octicons name="dot-fill" size={20} />
-            <View style={styles.totalPrice}>
-              <Foundation name="dollar" size={20} />
-              <Text style={styles.textTotalPrice}>{totalPrice}</Text>
+            <View style={globalStyle.sectionName}>
+              <Text style={styles.textSection}>Section reg, Row 1</Text>
+              <Text style={styles.textAvaible}>12 Seats available</Text>
+              <Text style={styles.textSection}>Quantity</Text>
             </View>
+            <View style={styles.priceContainer}>
+              <Text style={styles.textSection}>$15</Text>
+              <Text style={styles.textAvaible}>per person</Text>
+              <View style={styles.quantityParent}>
+                <TouchableRipple
+                  onPress={countRegMinus}
+                  disabled={countVip || countVvip ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="minus" size={15} />
+                  </View>
+                </TouchableRipple>
+                <Text style={styles.textCount}>{countReg}</Text>
+                <TouchableRipple
+                  onPress={countRegPlus}
+                  disabled={countVip || countVvip ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="plus" size={15} />
+                  </View>
+                </TouchableRipple>
+              </View>
+            </View>
+            <View />
           </View>
-          <Text style={styles.textAvaible}>Get now on Urticket</Text>
+          <View style={globalStyle.sectionContainer}>
+            <View>
+              <Image
+                source={{
+                  uri: secTwo,
+                }}
+                style={styles.sectionIcon}
+              />
+            </View>
+            <View style={globalStyle.sectionName}>
+              <Text style={styles.textSection}>Section reg, Row 1</Text>
+              <Text style={styles.textAvaible}>12 Seats available</Text>
+              <Text style={styles.textSection}>Quantity</Text>
+            </View>
+            <View style={styles.priceContainer}>
+              <Text style={styles.textSection}>$35</Text>
+              <Text style={styles.textAvaible}>per person</Text>
+              <View style={styles.quantityParent}>
+                <TouchableRipple
+                  onPress={vipCounMin}
+                  disabled={countReg || countVvip ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="minus" size={15} />
+                  </View>
+                </TouchableRipple>
+                <Text style={styles.textCount}>{countVip}</Text>
+                <TouchableRipple
+                  onPress={vipCounPlus}
+                  disabled={countReg || countVvip ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="plus" size={15} />
+                  </View>
+                </TouchableRipple>
+              </View>
+            </View>
+            <View />
+          </View>
+          <View style={globalStyle.sectionContainer}>
+            <View>
+              <Image
+                source={{
+                  uri: secOne,
+                }}
+                style={styles.sectionIcon}
+              />
+            </View>
+            <View style={globalStyle.sectionName}>
+              <Text style={styles.textSection}>Section reg, Row 1</Text>
+              <Text style={styles.textAvaible}>12 Seats available</Text>
+              <Text style={styles.textSection}>Quantity</Text>
+            </View>
+            <View style={styles.priceContainer}>
+              <Text style={styles.textSection}>$50</Text>
+              <Text style={styles.textAvaible}>per person</Text>
+              <View style={styles.quantityParent}>
+                <TouchableRipple
+                  onPress={vvipCountMin}
+                  disabled={countVip || countReg ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="minus" size={15} />
+                  </View>
+                </TouchableRipple>
+                <Text style={styles.textCount}>{countVvip}</Text>
+                <TouchableRipple
+                  onPress={vvipCountPlus}
+                  disabled={countVip || countReg ? true : false}>
+                  <View style={styles.quantityCount}>
+                    <AntDesign name="plus" size={15} />
+                  </View>
+                </TouchableRipple>
+              </View>
+            </View>
+            <View />
+          </View>
         </View>
-        <TouchableRipple style={globalStyle.bookingButton} onPress={handleBuy}>
-          <Text style={styles.colorWhite}>Checkout</Text>
-        </TouchableRipple>
+        <View style={globalStyle.bookingFooter}>
+          <View style={globalStyle.result}>
+            <View style={globalStyle.resultLeftSide}>
+              <Text style={styles.textCheckSection}>
+                {(countReg && 'REG') ||
+                  (countVip && 'VIP') ||
+                  (countVvip && 'VVIP')}
+              </Text>
+              <Octicons name="dot-fill" size={20} />
+              <View style={styles.totalTicket}>
+                <Image
+                  source={{
+                    uri:
+                      countReg || countVip || countVvip
+                        ? (countReg && secThree) ||
+                          (countVip && secTwo) ||
+                          (countVvip && secOne)
+                        : SecFour,
+                  }}
+                  style={styles.totalTicketIcon}
+                />
+                <Text>{countReg || countVip || countVvip}</Text>
+              </View>
+              <Octicons name="dot-fill" size={20} />
+              <View style={styles.totalPrice}>
+                <Foundation name="dollar" size={20} />
+                <Text style={styles.textTotalPrice}>{totalPrice}</Text>
+              </View>
+            </View>
+            <Text style={styles.textAvaible}>Get now on Urticket</Text>
+          </View>
+          <TouchableRipple
+            style={globalStyle.bookingButton}
+            onPress={handleBuy}>
+            <Text style={styles.colorWhite}>Checkout</Text>
+          </TouchableRipple>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

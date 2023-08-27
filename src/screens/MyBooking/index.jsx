@@ -27,12 +27,6 @@ export default function MyBooking() {
 
   return (
     <View>
-      <View style={globalStyle.bookingHeader}>
-        <TouchableRipple onPress={() => navigation.goBack()}>
-          <AntDesign name="arrowleft" size={30} color="#02A8A8" />
-        </TouchableRipple>
-        <Text style={globalStyle.textHeader}>My Booking</Text>
-      </View>
       <View style={globalStyle.dataContainer}>
         <View style={globalStyle.monthParent}>
           <View style={globalStyle.monthStyle}>
