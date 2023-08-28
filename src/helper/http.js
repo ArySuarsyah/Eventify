@@ -7,7 +7,8 @@ const http = token => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: 'https://fw15-backend-hazel.vercel.app',
+    // baseURL: 'https://fw15-backend-hazel.vercel.app',
+    baseURL: 'http://localhost:8888',
 
     headers,
   });

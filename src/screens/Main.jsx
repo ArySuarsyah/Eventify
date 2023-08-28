@@ -35,6 +35,14 @@ import {getUserData} from '../redux/reducers/profile';
 import globalStyle from '../assets/globalStyles';
 import Home from './Home';
 import Headers from '../components/Headers';
+import EventDetail from './eventDetail/Index';
+import Booking from './Booking/Index';
+import Payment from './Payment/Index';
+import EditProfile from './Profile/EditProfile';
+import ChangePassword from './Auth/ChangePassword';
+import ConfirmPayment from './ConfirmPayment/Index';
+import Create from './Manage/Create';
+import Update from './Manage/Update';
 
 const AuthStack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -167,6 +175,46 @@ function DrawerComponent() {
           ),
           drawerLabel: 'Manage Event',
         }}
+      />
+      <Drawer.Screen
+        name="Event Detail"
+        component={EventDetail}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Checkout"
+        component={Booking}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Payment"
+        component={Payment}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Edit Profile"
+        component={EditProfile}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Change Password"
+        component={ChangePassword}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Confirm Payment"
+        component={ConfirmPayment}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Create"
+        component={Create}
+        options={{drawerItemStyle: {display: 'none'}}}
+      />
+      <Drawer.Screen
+        name="Update"
+        component={Update}
+        options={{drawerItemStyle: {display: 'none'}}}
       />
     </Drawer.Navigator>
   );

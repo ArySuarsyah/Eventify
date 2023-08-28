@@ -12,8 +12,12 @@ export default function MyWishlist() {
   const [wishlistData, setWishlistData] = useState([]);
 
   const getWishlist = useCallback(async () => {
-    const {data} = await http(token).get('/wishlist/list');
-    setWishlistData(data.results);
+    try {
+      const {data} = await http(token).get('/wishlist/list');
+      setWishlistData(data.results);
+    } catch (error) {
+      return error;
+    }
   }, [token]);
 
   useEffect(() => {

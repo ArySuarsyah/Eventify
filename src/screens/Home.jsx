@@ -472,27 +472,27 @@ const Home = () => {
   );
 };
 
-const StackNav = () => {
-  return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="HomeStack" component={Home} />
-      <Stack.Screen name="Event Detail" component={EventDetail} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Checkout" component={Booking} />
-      <Stack.Screen name="Payment" component={Payment} />
-      <Stack.Screen name="Edit Profile" component={EditProfile} />
-      <Stack.Screen name="Change Password" component={ChangePassword} />
-      <Stack.Screen name="Confirm Payment" component={ConfirmPayment} />
-      <Stack.Screen name="History" component={MyBooking} />
-      <Stack.Screen name="Wishlist" component={MyWishlist} />
-      <Stack.Screen name="Manage Event" component={ManageEvent} />
-      <Stack.Screen name="Create" component={Create} />
-      <Stack.Screen name="Update" component={Update} />
-    </Stack.Navigator>
-  );
-};
+// const StackNav = () => {
+//   return (
+//     <Stack.Navigator screenOptions={{headerShown: false}}>
+//       <Stack.Screen name="HomeStack" component={Home} />
+//       <Stack.Screen name="Event Detail" component={EventDetail} />
+//       <Stack.Screen name="Profile" component={Profile} />
+//       <Stack.Screen name="Checkout" component={Booking} />
+//       <Stack.Screen name="Payment" component={Payment} />
+//       <Stack.Screen name="Edit Profile" component={EditProfile} />
+//       <Stack.Screen name="Change Password" component={ChangePassword} />
+//       <Stack.Screen name="Confirm Payment" component={ConfirmPayment} />
+//       <Stack.Screen name="History" component={MyBooking} />
+//       <Stack.Screen name="Wishlist" component={MyWishlist} />
+//       <Stack.Screen name="Manage Event" component={ManageEvent} />
+//       <Stack.Screen name="Create" component={Create} />
+//       <Stack.Screen name="Update" component={Update} />
+//     </Stack.Navigator>
+//   );
+// };
 
-export default StackNav;
+export default Home;
 
 // Styles
 const styles = StyleSheet.create({
