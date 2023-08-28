@@ -10,7 +10,7 @@ import React, {useState, useCallback, useEffect} from 'react';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
-// import NoTicket from '../../components/NoTicket';
+import NoTicket from '../../components/NoTicket';
 import {TouchableRipple, Modal, Portal, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import http from '../../helper/http';
@@ -25,24 +25,15 @@ export default function ManageEvent() {
   const token = useSelector(state => state.auth.token);
   const [message, setMessage] = React.useState('');
   const [visible, setVisible] = React.useState(false);
-  const [pageData, setPageData] = React.useState(1);
 
-  const getData = useCallback(
-    async (page = 1, limit = 5) => {
-      const {data} = await http(token).get('/events', {
-        params: {
-          page,
-          limit,
-        },
-      });
+  const getData = useCallback(async () => {
+    const {data} = await http(token).get('/events/user');
 
-      setEventData(data.results);
-    },
-    [token],
-  );
+    setEventData(data.results);
+  }, [token]);
 
   useEffect(() => {
-    getData(1, 5);
+    getData();
   }, [getData]);
 
   const goToCreate = () => {
@@ -69,19 +60,7 @@ export default function ManageEvent() {
 
   const handleConfirm = () => {
     setVisible(false);
-    navigation.navigate('ManageEvent');
-  };
-
-  const prevPage = () => {
-    if (pageData > 1) {
-      setPageData(pageData - 1);
-      getData(pageData, 5);
-    }
-  };
-
-  const nextPage = () => {
-    setPageData(pageData + 1);
-    getData(pageData, 5);
+    navigation.navigate('Manage Event');
   };
 
   return (
@@ -117,33 +96,38 @@ export default function ManageEvent() {
               <Text style={globalStyle.monthData}>Create</Text>
             </View>
           </TouchableRipple>
-          {eventData.map(event => {
-            return (
-              <View key={event.id} style={globalStyle.myBokingContaner}>
-                <View style={globalStyle.dateStyle}>
-                  <Text style={globalStyle.date}>
-                    {moment(event.date).format('DD')}
-                  </Text>
-                  <Text>{moment(event.date).format('ddd')}</Text>
-                </View>
-                <View style={{gap: 10}}>
-                  <Text style={globalStyle.fontData}>{event.title}</Text>
-                  <Text>{event.location}</Text>
-                  <Text>
-                    {moment(event.date).format('ddd, DD MMM, hh:ss a')}
-                  </Text>
-                  <View style={{flexDirection: 'row', gap: 10}}>
-                    <TouchableOpacity onPress={() => goToUpdate(event)}>
-                      <Text>Update</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleDelete(event.id)}>
-                      <Text>Delete</Text>
-                    </TouchableOpacity>
+          {eventData.length >= 1 ? (
+            eventData.map(event => {
+              return (
+                <View key={event.id} style={globalStyle.myBokingContaner}>
+                  <View style={globalStyle.dateStyle}>
+                    <Text style={globalStyle.date}>
+                      {moment(event.date).format('DD')}
+                    </Text>
+                    <Text>{moment(event.date).format('ddd')}</Text>
+                  </View>
+                  <View style={{gap: 10}}>
+                    <Text style={globalStyle.fontData}>{event.title}</Text>
+                    <Text>{event.location}</Text>
+                    <Text>
+                      {moment(event.date).format('ddd, DD MMM, hh:ss a')}
+                    </Text>
+                    <View style={{flexDirection: 'row', gap: 10}}>
+                      <TouchableOpacity onPress={() => goToUpdate(event)}>
+                        <Text>Update</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => handleDelete(event.id)}>
+                        <Text>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            })
+          ) : (
+            <NoTicket title={'No Event'} description={'Please Create First'} />
+          )}
+
           <View
             style={{
               flexDirection: 'row',
@@ -151,7 +135,7 @@ export default function ManageEvent() {
               alignItems: 'center',
               gap: 30,
             }}>
-            <TouchableRipple style={styles.buttonPagination} onPress={prevPage}>
+            {/* <TouchableRipple style={styles.buttonPagination} onPress={prevPage}>
               <View>
                 <AntDesign name="left" size={20} color="black" />
               </View>
@@ -161,9 +145,8 @@ export default function ManageEvent() {
               <View>
                 <AntDesign name="right" size={20} color="black" />
               </View>
-            </TouchableRipple>
+            </TouchableRipple> */}
           </View>
-          {/* <NoTicket /> */}
         </View>
       </View>
     </ScrollView>

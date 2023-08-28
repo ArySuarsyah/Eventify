@@ -126,7 +126,7 @@ export default function Create() {
       form.append('cityId', location);
       form.append('categoryId', category);
       form.append('description', values.detail);
-      const {data} = await http().post('/events/manage/create', form, {
+      const {data} = await http(token).post('/events/manage/create', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -144,7 +144,7 @@ export default function Create() {
 
   const handleConfirm = () => {
     setVisible(false);
-    navigation.navigate('ManageEvent');
+    navigation.navigate('Manage Event');
   };
 
   return (
@@ -192,6 +192,7 @@ export default function Create() {
               <View style={styles.gapMd}>
                 <TextInput
                   label="Name"
+                  color="#000"
                   style={styles.inputStyle}
                   value={values.name}
                   activeUnderlineColor="#02A8A8"
@@ -313,6 +314,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
+    color: 'black',
   },
   accordion: {
     borderBottomWidth: 1,
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 15,
   },
-  textBlack: {color: 'black'},
+  textBlack: {color: '#dedede'},
   date: {
     justifyContent: 'center',
     height: 30,

@@ -53,7 +53,13 @@ export default function MyBooking() {
               </View>
             );
           })}
-        {!dataHistory && <NoTicket />}
+        {!dataHistory && (
+          <NoTicket
+            title="No tickets bought"
+            description="It appears you haven't bought any tickets yet. Maybe try searching
+        these?"
+          />
+        )}
       </View>
     </View>
   );
