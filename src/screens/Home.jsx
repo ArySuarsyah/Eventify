@@ -32,21 +32,6 @@ import {getId} from '../redux/reducers/event';
 import {getUserData} from '../redux/reducers/profile';
 import Icon from 'react-native-vector-icons/dist/Feather';
 import {Tooltip} from 'react-native-paper';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import EventDetail from '../screens/eventDetail/Index';
-import EditProfile from './Profile/EditProfile';
-import ChangePassword from './Auth/ChangePassword';
-import ConfirmPayment from './ConfirmPayment/Index';
-import Create from './Manage/Create';
-import Update from './Manage/Update';
-import Profile from './Profile/Profile';
-import Booking from './Booking/Index';
-import Payment from './Payment/Index';
-import MyBooking from './MyBooking';
-import MyWishlist from './Wishlist/Index';
-import ManageEvent from './Manage/Index';
-
-const Stack = createNativeStackNavigator();
 
 const Home = () => {
   const token = useSelector(state => state.auth.token);
@@ -133,63 +118,6 @@ const Home = () => {
     dispatch(getId(val));
     navigation.navigate('Event Detail');
   };
-
-  // const navigationView = () => (
-  //   <View style={[globalStyle.navigationContainer]}>
-  //     <View style={globalStyle.profileNavigation}>
-  //       <View style={globalStyle.drawerUserImage}>
-  //         <Image
-  //           source={{
-  //             uri: user.picture
-  //               ? `https://res.cloudinary.com/arsrsyh/image/upload/v1692086351/${user.picture}`
-  //               : USER_DEFAULT_IMAGE,
-  //           }}
-  //           width={70}
-  //           height={70}
-  //         />
-  //       </View>
-  //       <View>
-  //         <Text style={globalStyle.subtitle}>{user.fullName}</Text>
-  //         <Text style={globalStyle.subtitle}>{user.email}</Text>
-  //       </View>
-  //       <Feather name="chevron-right" size={50} />
-  //     </View>
-  //     <View>
-  //       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-  //         <View style={globalStyle.drawerNavList}>
-  //           <FontAwesome name="user-circle" color="#c0bfbc" size={30} />
-  //           <Text style={globalStyle.drawerNavPoint}>Profile</Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={() => navigation.navigate('MyBooking')}>
-  //         <View style={globalStyle.drawerNavList}>
-  //           <Octicons name="checklist" color="#c0bfbc" size={30} />
-  //           <Text style={globalStyle.drawerNavPoint}>My Booking</Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
-  //         <View style={globalStyle.drawerNavList}>
-  //           <FontAwesome name="heart" color="#c0bfbc" size={30} />
-  //           <Text style={globalStyle.drawerNavPoint}>My Wishlist</Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={() => navigation.navigate('ManageEvent')}>
-  //         <View style={globalStyle.drawerNavList}>
-  //           <Ionicons name="cog" color="#c0bfbc" size={30} />
-  //           <Text style={globalStyle.drawerNavPoint}>Manage Event</Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={logout}>
-  //         <View style={globalStyle.drawerNavList}>
-  //           <MaterialIcons name="logout" color="#f03e3e" size={30} />
-  //           <Text style={[globalStyle.drawerNavPoint, globalStyle.redColor]}>
-  //             Logout
-  //           </Text>
-  //         </View>
-  //       </TouchableOpacity>
-  //     </View>
-  //   </View>
-  // );
 
   return (
     <SafeAreaView style={styles.saveArea}>
