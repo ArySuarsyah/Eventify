@@ -88,6 +88,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('eventify.keystore')
+            storePassword 'Kabiraan97'
+            keyAlias 'eventify'
+            keyPassword 'Kabiraan97'
+    }
     }
     buildTypes {
         debug {
@@ -107,6 +113,8 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
+
+
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
