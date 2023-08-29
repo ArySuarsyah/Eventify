@@ -27,6 +27,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {getUserData} from '../../redux/reducers/profile';
 import {useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 
 const validationSchema = Yup.object({
   fullName: Yup.string(),
@@ -64,9 +65,9 @@ export default function EditProfile() {
     }
   }, [token, dispacth]);
 
-  React.useEffect(() => {
+  useFocusEffect(() => {
     getUser();
-  }, [getUser]);
+  });
 
   const handleEditName = () => {
     setEditFullname(!editFullname);
@@ -292,7 +293,7 @@ export default function EditProfile() {
               mode="elevated"
               theme={{colors: {primary: '#018383'}}}
               onPress={handleConfirm}
-              style={styles.sendDataButton}>
+              style={styles.confirmButtn}>
               Ok
             </Button>
           </View>
@@ -537,7 +538,7 @@ export default function EditProfile() {
                 theme={{colors: {primary: '#018383'}}}
                 onPress={handleSubmit}
                 style={styles.sendDataButton}>
-                Save
+                <Text style={{color: '#fff'}}>Save</Text>
               </Button>
             </View>
           )}
@@ -628,6 +629,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   sendDataButton: {
+    color: '#fff',
     height: 50,
     width: '100%',
     justifyContent: 'center',

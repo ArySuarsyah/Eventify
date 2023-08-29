@@ -12,7 +12,7 @@ import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import globalStyle from '../../assets/globalStyles';
 import NoTicket from '../../components/NoTicket';
 import {TouchableRipple, Modal, Portal, Button} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import http from '../../helper/http';
 import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
@@ -32,9 +32,9 @@ export default function ManageEvent() {
     setEventData(data.results);
   }, [token]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     getData();
-  }, [getData]);
+  });
 
   const goToCreate = () => {
     navigation.navigate('Create');

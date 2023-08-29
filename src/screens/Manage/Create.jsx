@@ -41,9 +41,6 @@ export default function Create() {
   const [message, setMessage] = React.useState('');
   const [visible, setVisible] = React.useState(false);
 
-  // const showModal = () => setVisible(true);
-  // const hideModal = () => setVisible(false);
-
   const openGalerry = () => {
     const options = {
       mediaType: 'photo',
@@ -119,7 +116,7 @@ export default function Create() {
         name: 'image' + '-' + Date.now() + '.jpg',
       };
       const form = new FormData();
-      form.append('picture', image);
+      form.append('picture', imagePick ? image : null);
       form.append('title', values.name);
       form.append('price', values.price);
       form.append('date', moment(dataDate).format('YYYYMMDD'));
@@ -138,7 +135,11 @@ export default function Create() {
       }
     } catch (error) {
       setVisible(true);
-      setMessage(error.message);
+      if (error.response.data.message) {
+        setMessage(error.response.data.message);
+      } else {
+        setMessage(error.message);
+      }
     }
   };
 
